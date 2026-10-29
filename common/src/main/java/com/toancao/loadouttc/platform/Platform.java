@@ -39,6 +39,18 @@ public interface Platform {
      */
     List<ModEntrypoint> entrypoints(String key);
 
+    /**
+     * Slot sources this loader can offer, already filtered by whether their mod is installed.
+     * Platforms own this because which equipment mods exist differs per loader: Trinkets is
+     * Fabric-only, Curios is NeoForge-only, and platforms may ship a different implementation
+     * for the same mod.
+     */
+    List<NamedSource> builtinSources();
+
+    /** One slot source plus the label shown in the slot menu. */
+    record NamedSource(String label, com.toancao.loadouttc.compat.AccessorySource source) {
+    }
+
     /** One object published under an entrypoint key, plus the mod that published it. */
     record ModEntrypoint(String modId, Object value) {
     }

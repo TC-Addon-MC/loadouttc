@@ -2,6 +2,9 @@ package com.toancao.loadouttc.fabric;
 
 import com.toancao.loadouttc.LoadoutTcClient;
 import com.toancao.loadouttc.api.SlotSource;
+import com.toancao.loadouttc.compat.AccessoriesSource;
+import com.toancao.loadouttc.compat.CuriosSource;
+import com.toancao.loadouttc.compat.TrinketsSource;
 import com.toancao.loadouttc.platform.HudSink;
 import com.toancao.loadouttc.platform.Platform;
 import java.nio.file.Path;
@@ -59,6 +62,23 @@ final class FabricPlatform implements Platform {
     @Override
     public void onShutdown(Runnable callback) {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> callback.run());
+    }
+
+    @Override
+    public List<NamedSource> builtinSources() {
+        List<NamedSource> sources = new ArrayList<>();
+        // Each provider is only constructed when its mod is present, so a missing API is never
+        // touched and cannot throw at class-load time.
+        if (isModLoaded("accessories")) {
+            sources.add(new NamedSource("Accessories", new AccessoriesSource()));
+        }
+        if (isModLoaded("trinkets")) {
+            sources.add(new NamedSource("Trinkets", new TrinketsSource()));
+        }
+        if (isModLoaded("curios")) {
+            sources.add(new NamedSource("Curios", new CuriosSource()));
+        }
+        return sources;
     }
 
     @Override

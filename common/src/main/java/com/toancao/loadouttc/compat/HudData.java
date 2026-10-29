@@ -38,14 +38,8 @@ public final class HudData {
 
         registerInternal(new VanillaSource());
 
-        if (PlatformHolder.get().isModLoaded("accessories")) {
-            tryRegister(new AccessoriesSource(), "Accessories");
-        }
-        if (PlatformHolder.get().isModLoaded("trinkets")) {
-            tryRegister(new TrinketsSource(), "Trinkets");
-        }
-        if (PlatformHolder.get().isModLoaded("curios")) {
-            tryRegister(new CuriosSource(), "Curios");
+        for (Platform.NamedSource named : PlatformHolder.get().builtinSources()) {
+            tryRegister(named.source(), named.label());
         }
 
         registerEntrypoints();
