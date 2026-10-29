@@ -327,7 +327,7 @@ LoadoutTcApi.openEditor();
 LoadoutTcApi.reload();
 ```
 
-`setSize("auto")` follows Minecraft's GUI scale; presets go up to `giant` (3.0x) and
+`setSize("auto")` uses the default 0.8x scale; presets go up to `giant` (3.0x) and
 `setCustomScale` accepts `0.5 - 3.0`. Every setter saves `config/loadouttc.json` immediately.
 
 | Call | Note |

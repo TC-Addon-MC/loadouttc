@@ -493,7 +493,7 @@ public final class DevCheck {
 
     private static void sizes() {
         HudConfig cfg = new HudConfig();
-        check("auto is vanilla size", Math.abs(cfg.effectiveScale(3) - 1.0f) < 0.001f);
+        check("auto is 0.8x", Math.abs(cfg.effectiveScale(3) - 0.8f) < 0.001f);
         cfg.size = "xlarge";
         check("xlarge is 1.5x", Math.abs(cfg.effectiveScale(3) - 1.5f) < 0.001f);
         cfg.size = "huge";

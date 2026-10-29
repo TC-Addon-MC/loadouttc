@@ -274,9 +274,10 @@ public final class HudConfig {
             case "huge" -> 2.0f;
             case "giant" -> 3.0f;
             case "custom" -> scale;
-            // Auto means "one HUD unit is one GUI unit", so a slot is the size of a vanilla
-            // hotbar slot at every GUI scale instead of drifting smaller on high GUI scales.
-            default -> 1.0f;
+            // Auto means "one HUD unit is one GUI unit", so a slot keeps the vanilla hotbar unit
+            // at every GUI scale instead of drifting on higher ones. The scale is 0.8 so a full
+            // loadout of slots still fits next to the hotbar.
+            default -> 0.8f;
         };
         return clamp(base, 0.5f, 3.0f);
     }
@@ -305,7 +306,7 @@ public final class HudConfig {
             case "huge" -> "Double (2.00x)";
             case "giant" -> "Triple (3.00x)";
             case "custom" -> String.format(java.util.Locale.ROOT, "Custom (%.2fx)", scale);
-            default -> "Auto - vanilla size (1.00x)";
+            default -> "Auto - vanilla size (0.80x)";
         };
     }
     public void sanitize() {
