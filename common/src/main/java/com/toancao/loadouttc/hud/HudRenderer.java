@@ -8,6 +8,7 @@ import com.toancao.loadouttc.config.HudAnchor;
 import com.toancao.loadouttc.config.HudCluster;
 import com.toancao.loadouttc.config.HudConfig;
 import com.toancao.loadouttc.config.LayerOptions;
+import com.toancao.loadouttc.util.UiText;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -793,7 +794,7 @@ public final class HudRenderer {
                 boolean newGroup = cfg.groupHeaders && labels && "item".equals(cfg.labelMode)
                         && grouped && !groupName.equals(lastGroup) && !groupName.isBlank();
                 if (newGroup) {
-                    String label = groupName;
+                    String label = UiText.s(groupName);
                     int headerWidth = font.width(label) + 16;
                     contentWidth = Math.max(contentWidth, headerWidth);
                     headers.add(new Header(label, pad, cursor, headerWidth,
@@ -1676,7 +1677,7 @@ public final class HudRenderer {
         if (theme.numberRows) {
             text = slot.empty() ? "" : durabilityText(slot.stack());
         } else if (slot.empty()) {
-            text = "Empty";
+            text = UiText.s("Empty");
         } else if ("item".equals(cfg.labelMode)) {
             text = slot.stack().getHoverName().getString();
         } else {
@@ -1689,13 +1690,14 @@ public final class HudRenderer {
     private static String slotLabel(HudSlot slot) {
         if ("armor".equals(slot.group()) && slot.slot() != null && !slot.slot().isBlank()) {
             String id = slot.slot();
-            return Character.toUpperCase(id.charAt(0)) + id.substring(1);
+            return UiText.s(Character.toUpperCase(id.charAt(0)) + id.substring(1));
         }
         if ("offhand".equals(slot.group())) {
-            return "Offhand";
+            return UiText.s("Offhand");
         }
-        return slot.groupLabel() == null || slot.groupLabel().isBlank()
+        String label = slot.groupLabel() == null || slot.groupLabel().isBlank()
                 ? slot.group() : slot.groupLabel();
+        return label == null ? "" : UiText.s(label);
     }
 
     private static String durabilityText(ItemStack stack) {

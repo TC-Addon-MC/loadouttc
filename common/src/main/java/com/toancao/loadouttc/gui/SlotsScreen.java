@@ -861,18 +861,19 @@ public final class SlotsScreen extends Screen {
 
     private static String groupName(HudSlot slot) {
         if (slot.groupLabel() != null && !slot.groupLabel().isBlank()) {
-            return slot.groupLabel();
+            return UiText.s(slot.groupLabel());
         }
-        return slot.group() == null ? "Slots" : slot.group();
+        return UiText.s(slot.group() == null ? "Slots" : slot.group());
     }
 
     private static String slotName(HudSlot slot) {
         if ("armor".equals(slot.group())) {
             String id = slot.slot() == null ? "" : slot.slot();
-            return id.isEmpty() ? "Armor" : Character.toUpperCase(id.charAt(0)) + id.substring(1);
+            return id.isEmpty() ? UiText.s("Armor")
+                    : UiText.s(Character.toUpperCase(id.charAt(0)) + id.substring(1));
         }
         if ("offhand".equals(slot.group())) {
-            return "Offhand";
+            return UiText.s("Offhand");
         }
         return groupName(slot) + " " + (slot.index() + 1);
     }
