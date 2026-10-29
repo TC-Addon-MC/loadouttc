@@ -316,7 +316,7 @@ Effects are rendered on the client render thread. Keep them cheap: they run ever
 
 ```java
 LoadoutTcApi.setStyle("frost");                 // any of LoadoutTcApi.styles()
-LoadoutTcApi.setSize("auto");                  // auto | small | medium | large | xlarge | huge | giant | custom
+LoadoutTcApi.setSize("auto");                  // auto | micro | tiny | small | medium | large | xlarge | huge | giant | custom
 LoadoutTcApi.setCustomScale(0.9f);
 LoadoutTcApi.setDurabilityStyle("ring");       // bar | segments | pips | text | ring | battery | off
 LoadoutTcApi.setCooldownStyle("arc");          // arc | text | bar | frame | off

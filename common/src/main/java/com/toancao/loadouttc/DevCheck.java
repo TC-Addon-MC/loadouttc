@@ -501,6 +501,15 @@ public final class DevCheck {
         cfg.size = "giant";
         check("giant is 3x", Math.abs(cfg.effectiveScale(3) - 3.0f) < 0.001f);
         check("giant label", "3x".equals(cfg.sizeLabel()));
+        cfg.size = "tiny";
+        check("tiny is 0.65x", Math.abs(cfg.effectiveScale(3) - 0.65f) < 0.001f);
+        check("tiny label", "XS".equals(cfg.sizeLabel()));
+        cfg.size = "micro";
+        check("micro is 0.5x", Math.abs(cfg.effectiveScale(3) - 0.5f) < 0.001f);
+        check("micro label", "XXS".equals(cfg.sizeLabel()));
+        cfg.size = "micro";
+        cfg.sanitize();
+        check("micro survives sanitize", "micro".equals(cfg.size));
         cfg.size = "custom";
         cfg.scale = 5.0f;
         cfg.sanitize();

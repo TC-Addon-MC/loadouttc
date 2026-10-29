@@ -484,6 +484,8 @@ public final class HudEditorScreen extends Screen {
     private void cycleSize(Button button) {
         HudConfig target = ConfigStore.get().editTarget();
         String next = switch (target.size == null ? "auto" : target.size) {
+            case "micro" -> "small";
+            case "tiny" -> "micro";
             case "small" -> "medium";
             case "medium" -> "large";
             case "large" -> "xlarge";
@@ -491,7 +493,7 @@ public final class HudEditorScreen extends Screen {
             case "huge" -> "giant";
             case "giant" -> "custom";
             case "custom" -> "auto";
-            default -> "small";
+            default -> "tiny";
         };
         if ("custom".equals(next)) {
             target.scale = target.effectiveScale(minecraft.getWindow().getGuiScale());

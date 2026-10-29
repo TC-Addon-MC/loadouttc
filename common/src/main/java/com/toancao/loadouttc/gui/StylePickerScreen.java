@@ -384,7 +384,8 @@ public final class StylePickerScreen extends Screen {
         // Size belongs to the panel too: editing it while a panel is selected writes into that
         // panel's look, so each panel can be scaled independently.
         Section size = section("Spacing", "Size");
-        String[][] sizeOptions = {{"auto", "Auto"}, {"small", "S"}, {"medium", "M"},
+        String[][] sizeOptions = {{"auto", "Auto"}, {"micro", "XXS"}, {"tiny", "XS"},
+                {"small", "S"}, {"medium", "M"},
                 {"large", "L"}, {"xlarge", "XL"}, {"huge", "2x"}, {"giant", "3x"},
                 {"custom", "Custom"}};
         for (String[] option : sizeOptions) {

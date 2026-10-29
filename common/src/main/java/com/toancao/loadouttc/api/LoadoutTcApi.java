@@ -40,8 +40,8 @@ import net.minecraft.world.item.ItemStack;
  * the API is optional sugar for integrations and pack authors.
  */
 public final class LoadoutTcApi {
-    private static final Set<String> SIZES = Set.of("auto", "small", "medium", "large", "xlarge",
-            "huge", "giant", "custom");
+    private static final Set<String> SIZES = Set.of("auto", "micro", "tiny", "small", "medium",
+            "large", "xlarge", "huge", "giant", "custom");
 
     private LoadoutTcApi() {
     }

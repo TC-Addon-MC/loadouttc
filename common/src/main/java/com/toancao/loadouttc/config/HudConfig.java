@@ -265,6 +265,8 @@ public final class HudConfig {
     }
     public float effectiveScale(double guiScale) {
         float base = switch (size == null ? "auto" : size) {
+            case "micro" -> 0.5f;
+            case "tiny" -> 0.65f;
             case "small" -> 0.8f;
             case "medium" -> 1.0f;
             case "large" -> 1.25f;
@@ -280,6 +282,8 @@ public final class HudConfig {
     }
     public String sizeLabel() {
         return switch (size == null ? "auto" : size) {
+            case "micro" -> "XXS";
+            case "tiny" -> "XS";
             case "small" -> "S";
             case "medium" -> "M";
             case "large" -> "L";
@@ -292,6 +296,8 @@ public final class HudConfig {
     }
     public String sizeDescription(double guiScale) {
         return switch (size == null ? "auto" : size) {
+            case "micro" -> "Micro (0.50x)";
+            case "tiny" -> "Extra small (0.65x)";
             case "small" -> "Small (0.80x)";
             case "medium" -> "Medium (1.00x)";
             case "large" -> "Large (1.25x)";
@@ -306,7 +312,7 @@ public final class HudConfig {
         if (!HudStyle.isVisible(style())) style = HudStyle.VANILLA.id();
         style = style().id();
         anchor = anchor().name();
-        if (size == null || !size.matches("auto|small|medium|large|xlarge|huge|giant|custom")) size = "auto";
+        if (size == null || !size.matches("auto|micro|tiny|small|medium|large|xlarge|huge|giant|custom")) size = "auto";
         scale = clamp(scale, 0.5f, 3.0f);
         opacity = clamp(opacity, 0.2f, 1.0f);
         iconSize = (int) clamp(iconSize, 12, 40);

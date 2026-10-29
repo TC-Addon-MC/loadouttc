@@ -36,10 +36,10 @@ other mods can add slot sources, effects and ability timers.
 
 ## Sizes
 
-`Auto` keeps a slot at vanilla hotbar size for the current GUI scale. Presets go from `S` (0.8x) to
-`3x`, and `Custom` covers `0.5 - 3.0x`, so a HUD can be much larger than the vanilla hotbar:
+`Auto` keeps a slot at vanilla hotbar size for the current GUI scale. Presets go from `XXS` (0.5x)
+to `3x`, so a HUD can be much smaller or much larger than the vanilla hotbar:
 
-`Auto` · `S 0.8x` · `M 1.0x` · `L 1.25x` · `XL 1.5x` · `2x` · `3x` · `Custom`
+`Auto` · `XXS 0.5x` · `XS 0.65x` · `S 0.8x` · `M 1.0x` · `L 1.25x` · `XL 1.5x` · `2x` · `3x` · `Custom`
 
 If the HUD would run off screen, the renderer scales it down just enough to keep it visible.
 
@@ -148,7 +148,7 @@ work normally.
 }
 ```
 
-- `size`: `auto`, `small`, `medium`, `large`, `xlarge`, `huge`, `giant`, `custom`.
+- `size`: `auto`, `micro`, `tiny`, `small`, `medium`, `large`, `xlarge`, `huge`, `giant`, `custom`.
 - `anchor`: `TOP_LEFT`, `TOP_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_RIGHT`, `ABOVE_HOTBAR`, `CENTER`,
   `CUSTOM` (`x`/`y` are absolute only for `CUSTOM`).
 - `layoutMode`: `vertical`, `horizontal`, `grid`, `circle`. An empty value follows `horizontal`.
