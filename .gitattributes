@@ -1,0 +1,15 @@
+# Normalise text in the repository; keep binaries untouched.
+* text=auto
+
+*.java text
+*.gradle text
+*.properties text
+*.json text
+*.md text
+*.sh text eol=lf
+gradlew text eol=lf
+*.bat text eol=crlf
+
+*.jar binary
+*.png binary
+*.gz binary

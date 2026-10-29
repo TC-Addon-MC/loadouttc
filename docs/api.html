@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="os">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loadout TC API - 1.0.0 | Reference</title>
+<meta name="description" content="Complete client-side API reference for Loadout TC: slot keys, slot sources, effects, panels, feedback layers, ability timers and look settings." />
+<style>
+:root {
+    --color-background: #f2f4f8;
+    --color-background-secondary: #eff0f1;
+    --color-background-active: #d6d8da;
+    --color-accent: #c5c7c9;
+    --color-text: #222;
+    --color-text-aside: #5e5e5e;
+    --color-link: #1f70c2;
+    --color-focus: #3584e4;
+    --color-code-bg: #e7e9ec;
+    --color-shadow: rgba(0, 0, 0, 0.08);
+    --dim-header-height: 3.5rem;
+    --dim-page-menu-width: 300px;
+}
+html[data-theme="dark"] {
+    --color-background: #2b2e33;
+    --color-background-secondary: #1e2024;
+    --color-background-active: #343a40;
+    --color-accent: #9096a2;
+    --color-text: #f5f5f5;
+    --color-text-aside: #dddddd;
+    --color-link: #00aff4;
+    --color-focus: #4c97f2;
+    --color-code-bg: #24272b;
+    --color-shadow: rgba(0, 0, 0, 0.4);
+}
+@media (prefers-color-scheme: dark) {
+    html[data-theme="os"] {
+        --color-background: #2b2e33;
+        --color-background-secondary: #1e2024;
+        --color-background-active: #343a40;
+        --color-accent: #9096a2;
+        --color-text: #f5f5f5;
+        --color-text-aside: #dddddd;
+        --color-link: #00aff4;
+        --color-focus: #4c97f2;
+        --color-code-bg: #24272b;
+        --color-shadow: rgba(0, 0, 0, 0.4);
+    }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.6;
+}
+a { color: var(--color-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.875rem;
+}
+code {
+    background: var(--color-code-bg);
+    border-radius: 0.4em;
+    padding: 0.15em 0.35em;
+}
+pre {
+    background: var(--color-code-bg);
+    border-radius: 0.8em;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    line-height: 1.55;
+    margin: 0 0 1rem;
+}
+pre code { background: none; padding: 0; }
+.tsd-page-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: var(--dim-header-height);
+    background: var(--color-background-secondary);
+    border-bottom: 1px solid var(--color-accent);
+}
+.tsd-toolbar-contents {
+    max-width: 1700px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.tsd-toolbar-contents .title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+}
+.tsd-toolbar-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.tsd-toolbar-links a,
+.tsd-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-text-aside);
+    border: 1px solid transparent;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.875rem;
+    background: none;
+    cursor: pointer;
+}
+.tsd-toolbar-links a:hover,
+.tsd-widget:hover {
+    color: var(--color-text);
+    border-color: var(--color-accent);
+    text-decoration: none;
+}
+.container-main {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--dim-page-menu-width);
+    gap: 2.5rem;
+    align-items: start;
+}
+.col-content { min-width: 0; }
+.tsd-page-title h1 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-accent);
+}
+.tsd-typography h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2.4rem 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--color-accent);
+    scroll-margin-top: calc(var(--dim-header-height) + 1rem);
+    position: relative;
+}
+.tsd-typography h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.6rem 0 0.5rem;
+    scroll-margin-top: calc(var(--dim-header-height) + 1rem);
+}
+.tsd-anchor-icon {
+    color: var(--color-text-aside);
+    font-weight: 400;
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.12s;
+}
+h2:hover .tsd-anchor-icon { opacity: 1; }
+p { margin: 0 0 1rem; }
+ul, ol { margin: 0 0 1rem; padding-left: 1.5rem; }
+li { margin: 0.3rem 0; }
+.lead { font-size: 1.05rem; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.25rem;
+    font-size: 0.94rem;
+}
+th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--color-accent);
+    vertical-align: top;
+}
+th { font-weight: 600; }
+tbody tr:hover { background: var(--color-background-secondary); }
+tr:target, tr:target td { background: var(--color-background-active); }
+.tsd-typography table code {
+    white-space: normal;
+    word-break: break-word;
+}
+table.api td:first-child { width: 46%; }
+table.api td:nth-child(2) { width: 10%; white-space: nowrap; }
+.badge {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    margin-right: 0.35rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--color-text-aside);
+    white-space: nowrap;
+}
+.panel {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.8em;
+    padding: 0.9rem 1rem;
+    margin: 0 0 1.25rem;
+}
+.panel p:last-child { margin-bottom: 0; }
+kbd {
+    display: inline-block;
+    background: var(--color-code-bg);
+    border: 1px solid var(--color-accent);
+    border-bottom-width: 2px;
+    border-radius: 0.35em;
+    padding: 0.05em 0.4em;
+    font-family: inherit;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+.page-menu {
+    position: sticky;
+    top: calc(var(--dim-header-height) + 1.5rem);
+    font-size: 0.875rem;
+    max-height: calc(100vh - var(--dim-header-height) - 3rem);
+    overflow-y: auto;
+}
+.page-menu h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-aside);
+    margin: 0 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.page-menu a {
+    display: block;
+    color: var(--color-text);
+    padding: 0.25rem 0;
+    opacity: 0.85;
+}
+.page-menu a:hover { color: var(--color-link); opacity: 1; text-decoration: none; }
+.page-menu .settings {
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.page-menu label {
+    display: block;
+    color: var(--color-text-aside);
+    margin-bottom: 0.35rem;
+}
+.page-menu select {
+    width: 100%;
+    background: var(--color-background-secondary);
+    color: var(--color-text);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.4rem;
+    padding: 0.35rem;
+    font: inherit;
+}
+.page-menu .sub { padding-left: 0.8rem; font-size: 0.84rem; opacity: 0.75; }
+footer {
+    border-top: 1px solid var(--color-accent);
+    color: var(--color-text-aside);
+    font-size: 0.875rem;
+}
+footer .container {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+.footer-links a { color: var(--color-text-aside); }
+.footer-links a:hover { color: var(--color-link); }
+dialog#tsd-search {
+    width: min(48rem, 92vw);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.8em;
+    background: var(--color-background);
+    color: var(--color-text);
+    padding: 1rem;
+    box-shadow: 0 12px 40px var(--color-shadow);
+}
+dialog#tsd-search::backdrop { background: rgba(0, 0, 0, 0.35); }
+dialog#tsd-search input {
+    width: 100%;
+    font: inherit;
+    color: var(--color-text);
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+dialog#tsd-search ul { list-style: none; margin: 0; padding: 0; max-height: 340px; overflow-y: auto; }
+dialog#tsd-search li a {
+    display: block;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.4rem;
+    color: var(--color-text);
+}
+dialog#tsd-search li a:hover, dialog#tsd-search li a.active {
+    background: var(--color-background-active);
+    text-decoration: none;
+}
+dialog#tsd-search li small { display: block; color: var(--color-text-aside); }
+@media (max-width: 1023px) {
+    .container-main { grid-template-columns: minmax(0, 1fr); }
+    .page-menu { display: none; }
+}
+@media (max-width: 600px) {
+    .tsd-toolbar-links a span { display: none; }
+    .tsd-page-title h1 { font-size: 1.5rem; }
+    .tsd-typography h2 { font-size: 1.3rem; }
+    table { font-size: 0.88rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    table.api td:first-child { width: 54%; }
+}
+</style>
+</head>
+<body>
+
+<header class="tsd-page-toolbar">
+    <div class="tsd-toolbar-contents">
+        <a href="api.html" class="title">Loadout TC API - 1.0.0</a>
+        <div class="tsd-toolbar-links">
+            <button class="tsd-widget" id="search-trigger" aria-label="Search the reference">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="4.75" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+                <span>Search</span>
+            </button>
+            <a href="https://ko-fi.com/toancao" target="_blank" rel="noopener noreferrer" aria-label="Support on Ko-fi"><span>Ko-fi</span></a>
+            <a href="index.html" aria-label="Overview page"><span>Overview</span></a>
+            <a href="API.md" aria-label="Markdown version"><span>Markdown</span></a>
+            <a href="../README.md" aria-label="Readme"><span>Readme</span></a>
+        </div>
+    </div>
+</header>
+
+<div class="container-main">
+    <div class="col-content">
+        <div class="tsd-page-title">
+            <h1>API reference</h1>
+        </div>
+
+        <div class="tsd-typography">
+            <p class="lead"><code>LoadoutTcApi</code> is a small, optional, client-side API. It lets another
+                mod change the HUD look, add its own slots, animate a slot, show ability timers or place a
+                second overlay next to the HUD. The HUD works with none of these calls.</p>
+
+            <p>
+                <span class="badge">API 4</span>
+                <span class="badge">Fabric 1.21.1</span>
+                <span class="badge">Client side</span>
+                <span class="badge">90 methods</span>
+            </p>
+
+            <table>
+                <tbody>
+                    <tr><th style="width: 32%">Entry point</th><td><code>com.toancao.loadouttc.api.LoadoutTcApi</code></td></tr>
+                    <tr><th>Types</th><td><code>SlotView</code>, <code>SourceView</code>, <code>SlotSource</code>, <code>ApiSlot</code>, <code>SlotEffect</code>, <code>EffectContext</code>, <code>EffectFrame</code></td></tr>
+                    <tr><th>Side</th><td>Client only; never call from a dedicated server</td></tr>
+                    <tr><th>Version</th><td><code>LoadoutTcApi.version()</code> and <code>apiVersion()</code></td></tr>
+                </tbody>
+            </table>
+
+            <div class="panel">
+                <p><strong>All methods are static members of <code>LoadoutTcApi</code></strong> unless a row
+                    names another type. Setters save <code>config/loadouttc.json</code> immediately, so do
+                    not call them every frame.</p>
+            </div>
+
+            <h2 id="overview">Overview<a class="tsd-anchor-icon" href="#overview" aria-label="Permalink">#</a></h2>
+            <p>The API is organised in layers. Most integrations need one or two of them:</p>
+            <table data-section="Overview">
+                <thead>
+                    <tr><th>Layer</th><th>Use it to</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Slot sources</td><td>Contribute slots from your own inventory; they appear as a tab and draw like any other slot.</td></tr>
+                    <tr><td>Queries</td><td>Read every slot, its item, durability, cooldown and ability state.</td></tr>
+                    <tr><td>Selection and order</td><td>Show, hide, filter and sort slots; open the slot menu.</td></tr>
+                    <tr><td>Effects</td><td>Play a built-in animation, register a custom one or pin a featured slot.</td></tr>
+                    <tr><td>Feedback layers</td><td>Style the durability, cooldown and ability feedback.</td></tr>
+                    <tr><td>Panels</td><td>Split slots across independent HUD panels and read their screen bounds.</td></tr>
+                    <tr><td>Look and layout</td><td>Pick the style, size, accent, arrangement and open the editor.</td></tr>
+                </tbody>
+            </table>
+
+            <h3 id="common-tasks">Common tasks<a class="tsd-anchor-icon" href="#common-tasks" aria-label="Permalink">#</a></h3>
+            <table data-section="Overview">
+                <thead>
+                    <tr><th>Task</th><th>Call</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Change the whole look</td><td><code>setStyle("hex")</code>, <code>setSize("2x")</code></td></tr>
+                    <tr><td>Highlight a slot for 3 s</td><td><code>playEffect(key, "pulse", 3000)</code></td></tr>
+                    <tr><td>Show a skill timer</td><td><code>showAbility(key, 4500)</code></td></tr>
+                    <tr><td>Add your own slots</td><td>Implement <code>SlotSource</code>, then declare the entrypoint</td></tr>
+                    <tr><td>Move slots to another panel</td><td><code>splitToCluster("Rings", keys)</code></td></tr>
+                    <tr><td>Keep another overlay clear of the HUD</td><td><code>hudBounds()</code></td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="getting-started">Getting started<a class="tsd-anchor-icon" href="#getting-started" aria-label="Permalink">#</a></h2>
+            <p>The API lives inside the mod jar; there is no separate library. Add the jar as a compile-only
+                dependency:</p>
+<pre><code>dependencies {
+    compileOnly files("libs/loadouttc-1.0.0+1.21.1.jar")
+    // Fabric Loom projects can use modCompileOnly instead
+}</code></pre>
+            <p>Imports used in this reference:</p>
+<pre><code>import com.toancao.loadouttc.api.ApiSlot;
+import com.toancao.loadouttc.api.EffectContext;
+import com.toancao.loadouttc.api.EffectFrame;
+import com.toancao.loadouttc.api.LoadoutTcApi;
+import com.toancao.loadouttc.api.SlotEffect;
+import com.toancao.loadouttc.api.SlotSource;</code></pre>
+            <p>Guard new methods by contract version. It only goes up when a method changes meaning or is
+                removed:</p>
+<pre><code>if (LoadoutTcApi.apiVersion() &gt;= 4) {
+    // SlotSource / ApiSlot, the extra SlotView fields and sourceViews() exist
+    for (LoadoutTcApi.SourceView tab : LoadoutTcApi.sourceViews()) {
+        LOG.info("{}: {}", tab.id(), tab.label());
+    }
+}</code></pre>
+            <table class="api" data-section="Getting started">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="apiVersion"><td><code>apiVersion()</code></td><td><code>int</code></td><td>API contract version, currently <code>4</code>. Cheap; safe in an entrypoint.</td></tr>
+                    <tr id="version"><td><code>version()</code></td><td><code>String</code></td><td>Fabric version string such as <code>1.0.0+1.21.1</code>; <code>"unknown"</code> only if the mod container is missing.</td></tr>
+                </tbody>
+            </table>
+            <div class="panel">
+                <p><strong>Optional dependency.</strong> If Loadout TC may be absent, check
+                    <code>FabricLoader.getInstance().isModLoaded("loadouttc")</code> and keep every API call
+                    behind that check, preferably in its own class so the API types are never loaded without
+                    the mod.</p>
+            </div>
+
+            <h2 id="keys">Slot keys<a class="tsd-anchor-icon" href="#keys" aria-label="Permalink">#</a></h2>
+            <p>Every slot has a stable key. The group segment is omitted when the group and the slot type
+                share a name:</p>
+<pre><code>source/slot/index            when group and slot share a name
+source/group/slot/index      otherwise</code></pre>
+            <table data-section="Slot keys">
+                <thead>
+                    <tr><th>Key</th><th>Source / group / slot / index</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>accessories/ring/0</code></td><td>accessories / ring / ring / 0</td></tr>
+                    <tr><td><code>trinkets/chest/necklace/0</code></td><td>trinkets / chest / necklace / 0</td></tr>
+                    <tr><td><code>curios/ring/1</code></td><td>curios / ring / ring / 1</td></tr>
+                    <tr><td><code>vanilla/armor/helmet/0</code></td><td>vanilla / armor / helmet / 0</td></tr>
+                    <tr><td><code>vanilla/offhand/0</code></td><td>vanilla / offhand / offhand / 0</td></tr>
+                    <tr><td><code>vanilla/hotbar/3</code></td><td>vanilla / hotbar / hotbar / 3</td></tr>
+                    <tr><td><code>vanilla/inventory/14</code></td><td>vanilla / inventory / inventory / 14</td></tr>
+                    <tr><td><code>mymod/charm/0</code></td><td>your source / charm / charm / 0</td></tr>
+                </tbody>
+            </table>
+            <p>Indices start at <code>0</code>. Keys never change while the game runs, so they are safe to
+                persist, but a removed source makes its keys disappear.</p>
+            <table class="api" data-section="Slot keys">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="slotKeys"><td><code>slotKeys()</code></td><td><code>List&lt;String&gt;</code></td><td>Keys the HUD is drawing right now, in display order. Filtered and sorted.</td></tr>
+                    <tr id="slots"><td><code>slots()</code></td><td><code>List&lt;LoadoutTcApi.SlotView&gt;</code></td><td>Every known slot, including hidden and empty ones.</td></tr>
+                    <tr id="visibleSlots"><td><code>visibleSlots()</code></td><td><code>List&lt;LoadoutTcApi.SlotView&gt;</code></td><td>Exactly the drawn slots, following each panel's own sort order and slot cap.</td></tr>
+                    <tr id="slotBounds"><td><code>slotBounds(String slotKey)</code></td><td><code>int[]</code></td><td><code>x, y, w, h</code> in GUI pixels, or all zeroes when the slot is not drawn.</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="slotview">SlotView and SourceView<a class="tsd-anchor-icon" href="#slotview" aria-label="Permalink">#</a></h2>
+            <p><code>LoadoutTcApi.SlotView</code> is an immutable snapshot of one slot, including its live
+                state at the moment of the call.</p>
+            <table data-section="SlotView">
+                <thead>
+                    <tr><th>Field</th><th>Meaning</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>key</code></td><td>Stable slot key, see <a href="#keys">Slot keys</a>.</td></tr>
+                    <tr><td><code>source</code> / <code>group</code></td><td>Provider id (for example <code>accessories</code>) and its sub-group (<code>ring</code>).</td></tr>
+                    <tr><td><code>label</code></td><td>Heading shown for the group, for example <code>Ring</code>.</td></tr>
+                    <tr><td><code>index</code></td><td>Position inside that slot type.</td></tr>
+                    <tr><td><code>itemId</code></td><td>Registry id such as <code>minecraft:diamond_sword</code>; empty for an empty slot.</td></tr>
+                    <tr><td><code>empty</code></td><td><code>true</code> when the slot has no stack.</td></tr>
+                    <tr><td><code>visible</code></td><td>Whether the panel that owns the slot is drawing it, using that panel's filter, sort and cap.</td></tr>
+                    <tr><td><code>stack</code> / <code>count</code></td><td>The live <code>ItemStack</code> and its stack size (<code>0</code> when empty).</td></tr>
+                    <tr><td><code>damage</code> / <code>maxDamage</code></td><td>Durability values; both <code>0</code> for items that cannot take damage.</td></tr>
+                    <tr><td><code>cooldownRemaining</code></td><td>Vanilla cooldown fraction: <code>0</code> ready, <code>1</code> just started.</td></tr>
+                    <tr><td><code>abilityRemaining</code></td><td>Ability timer fraction, <code>0..1</code>.</td></tr>
+                    <tr><td><code>abilitySeconds</code></td><td>Remaining seconds of the timer started with <code>showAbility</code>; <code>0</code> when idle.</td></tr>
+                </tbody>
+            </table>
+            <p>Helpers: <code>damageable()</code> is <code>maxDamage &gt; 0</code>, and
+                <code>onCooldown()</code> is <code>cooldownRemaining &gt; 0</code>.</p>
+            <p><code>LoadoutTcApi.SourceView</code> is a record of <code>id</code> and <code>label</code>,
+                returned in the order the slot menu shows its tabs. Use it to build a matching tab bar.</p>
+
+            <h2 id="sources">Slot sources<a class="tsd-anchor-icon" href="#sources" aria-label="Permalink">#</a></h2>
+            <p>A source contributes slots to the HUD. It gets a tab in the slot menu, and its keys use your
+                id as the prefix. Implement <code>SlotSource</code> with only API types; no internal class
+                is needed.</p>
+<pre><code>public final class MySource implements SlotSource {
+    public String id() { return "mymod"; }
+    public String label() { return "My Mod"; }
+    public boolean available() { return true; }
+
+    public void collect(Minecraft minecraft, Player player, boolean includeEmpty,
+                        List&lt;ApiSlot&gt; out) {
+        ItemStack stack = myEquippedStack(player);
+        if (!stack.isEmpty() || includeEmpty) {
+            out.add(new ApiSlot(id(), "charm", "Charm", "charm", 0, stack));
+        }
+    }
+}
+
+LoadoutTcApi.registerSource(new MySource());</code></pre>
+            <table data-section="SlotSource">
+                <thead>
+                    <tr><th>Member</th><th>Contract</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id()</code></td><td>Unique, lowercase. Becomes the key prefix (<code>mymod/...</code>) and the tab id.</td></tr>
+                    <tr><td><code>label()</code></td><td>Tab caption; defaults to <code>id()</code>.</td></tr>
+                    <tr><td><code>available()</code></td><td>Return <code>false</code> while the other mod is absent; the tab is hidden and <code>collect</code> is not called.</td></tr>
+                    <tr><td><code>collect(Minecraft, Player, boolean includeEmpty, List&lt;ApiSlot&gt; out)</code></td><td>Fill <code>out</code> in display order. Emit empty stacks only when <code>includeEmpty</code> is true.</td></tr>
+                </tbody>
+            </table>
+            <h3 id="apislot">ApiSlot<a class="tsd-anchor-icon" href="#apislot" aria-label="Permalink">#</a></h3>
+            <table data-section="ApiSlot">
+                <thead>
+                    <tr><th>Field</th><th>Meaning</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>source</code></td><td>Must equal <code>id()</code>.</td></tr>
+                    <tr><td><code>group</code> / <code>groupLabel</code></td><td>Sub-group inside the tab (for example <code>ring</code>) and the heading printed for it.</td></tr>
+                    <tr><td><code>slot</code></td><td>Slot type; repeat the group name when they are the same.</td></tr>
+                    <tr><td><code>index</code></td><td>Position inside that slot type, starting at <code>0</code>.</td></tr>
+                    <tr><td><code>stack</code></td><td><code>ItemStack.EMPTY</code> for an empty slot; <code>null</code> becomes empty.</td></tr>
+                </tbody>
+            </table>
+            <p><code>key()</code>, <code>empty()</code> and <code>itemId()</code> are derived for you;
+                <code>key()</code> follows the format in <a href="#keys">Slot keys</a>.</p>
+
+            <h3 id="self-registering">Self-registering without any Loadout TC change<a class="tsd-anchor-icon" href="#self-registering" aria-label="Permalink">#</a></h3>
+            <p>Declare the <code>loadouttc:slot_source</code> entrypoint in your own
+                <code>fabric.mod.json</code> and the HUD picks the source up at launch:</p>
+<pre><code>{
+  "entrypoints": {
+    "loadouttc:slot_source": ["com.example.mymod.MySlots"]
+  }
+}</code></pre>
+            <p>The class needs a no-arg constructor and implements <code>SlotSource</code>. List one class
+                per source. Registering the same id at runtime replaces the entrypoint version, so a mod
+                can also call <code>registerSource(...)</code> later, for example after its own config
+                loads. A throwing <code>available()</code> or <code>collect()</code> disables only that
+                source and is logged; the rest of the HUD keeps working.</p>
+            <table class="api" data-section="Slot sources">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="registerSource"><td><code>registerSource(SlotSource source)</code></td><td><code>boolean</code></td><td>Adds or replaces a source; its tab appears immediately. <code>false</code> for a null or blank id.</td></tr>
+                    <tr id="registerSource-legacy"><td><code>registerSource(AccessorySource source)</code></td><td><code>boolean</code></td><td>Legacy overload. It exposes internal types that may change; prefer <code>SlotSource</code>.</td></tr>
+                    <tr id="unregisterSource"><td><code>unregisterSource(String id)</code></td><td><code>boolean</code></td><td>Removes a source; <code>false</code> when the id was not registered.</td></tr>
+                    <tr id="method-sources"><td><code>sources()</code></td><td><code>List&lt;String&gt;</code></td><td>Installed source ids, vanilla first.</td></tr>
+                    <tr id="hasSource"><td><code>hasSource(String id)</code></td><td><code>boolean</code></td><td>Whether a source is installed/registered right now; this is not the enable switch.</td></tr>
+                    <tr id="sourceViews"><td><code>sourceViews()</code></td><td><code>List&lt;LoadoutTcApi.SourceView&gt;</code></td><td>Id and display label of every source, in slot-menu tab order.</td></tr>
+                    <tr id="setSourceEnabled"><td><code>setSourceEnabled(String sourceId, boolean enabled)</code></td><td><code>void</code></td><td>Hides or shows a whole source in every panel without uninstalling it.</td></tr>
+                    <tr id="isSourceEnabled"><td><code>isSourceEnabled(String sourceId)</code></td><td><code>boolean</code></td><td>The saved enable switch for that source.</td></tr>
+                    <tr id="setVanillaGroup"><td><code>setVanillaGroup(String group, boolean enabled)</code></td><td><code>void</code></td><td>Accepts <code>armor</code>, <code>offhand</code>, <code>hotbar</code> or <code>inventory</code>; other names are ignored.</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="selection">Slot selection and ordering<a class="tsd-anchor-icon" href="#selection" aria-label="Permalink">#</a></h2>
+            <p>These setters apply to <strong>every panel</strong>. Once a config has more than one panel,
+                each panel keeps its own selection; the getters below return the shared defaults that new
+                panels start from. Ticking a slot in the menu also claims it for the panel being edited.</p>
+            <table class="api" data-section="Slot selection">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="setEmptySlots"><td><code>setEmptySlots(boolean enabled)</code></td><td><code>void</code></td><td>Draw empty slots as ghost frames.</td></tr>
+                    <tr id="setSlotVisible"><td><code>setSlotVisible(String slotKey, boolean visible)</code></td><td><code>void</code></td><td>Tick or untick one slot using the active filter mode.</td></tr>
+                    <tr id="isSlotVisible"><td><code>isSlotVisible(String slotKey)</code></td><td><code>boolean</code></td><td>Shared default selection for that key.</td></tr>
+                    <tr id="showOnlySlots"><td><code>showOnlySlots(Collection&lt;String&gt; keys)</code></td><td><code>void</code></td><td>Switches to <code>selected</code> mode and keeps only these keys.</td></tr>
+                    <tr id="showAllSlots"><td><code>showAllSlots()</code></td><td><code>void</code></td><td>Resets to <code>all</code> mode.</td></tr>
+                    <tr id="setSlotFilter"><td><code>setSlotFilter(String mode)</code></td><td><code>void</code></td><td><code>all</code> or <code>selected</code>. Selecting <code>selected</code> snapshots the slots visible at that moment; other values are ignored.</td></tr>
+                    <tr id="slotFilter"><td><code>slotFilter()</code></td><td><code>String</code></td><td>Current shared visibility model.</td></tr>
+                    <tr id="setSortMode"><td><code>setSortMode(String mode)</code></td><td><code>void</code></td><td><code>default</code>, <code>name</code>, <code>type</code>, <code>source</code> or <code>custom</code>. <code>custom</code> seeds the manual order from provider order.</td></tr>
+                    <tr id="sortMode"><td><code>sortMode()</code></td><td><code>String</code></td><td>Current shared sort mode.</td></tr>
+                    <tr id="setSlotOrder"><td><code>setSlotOrder(List&lt;String&gt; keys)</code></td><td><code>void</code></td><td>Replaces the manual order and switches to <code>custom</code>. Keys missing from the list are appended, so they never disappear.</td></tr>
+                    <tr id="moveSlot"><td><code>moveSlot(String slotKey, int delta)</code></td><td><code>void</code></td><td>Moves one slot in the manual order; <code>-1</code> up, <code>1</code> down. Switches to <code>custom</code> when it actually moves.</td></tr>
+                    <tr id="openSlots"><td><code>openSlots()</code></td><td><code>void</code></td><td>Opens the slot menu when a player is in game and no other screen is open.</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="panels">Panels (clusters)<a class="tsd-anchor-icon" href="#panels" aria-label="Permalink">#</a></h2>
+            <p>A panel is one independent HUD: its own slots, position and optionally its own look. A
+                config always has at least one, and the <em>rest</em> panel catches every slot no other
+                panel claims, so one panel behaves like the classic single HUD.</p>
+<pre><code>String panel = LoadoutTcApi.splitToCluster("Rings", List.of("accessories/ring/0"));
+LoadoutTcApi.assignSlotToCluster("accessories/ring/1", panel);
+int[] rect = LoadoutTcApi.clusterBounds(panel);   // x, y, w, h on screen
+int[] all  = LoadoutTcApi.hudBounds();            // union of every panel</code></pre>
+            <table class="api" data-section="Panels">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="clusters"><td><code>clusters()</code></td><td><code>List&lt;String&gt;</code></td><td>Ids of every panel, in draw order.</td></tr>
+                    <tr id="clusterOf"><td><code>clusterOf(String slotKey)</code></td><td><code>String</code></td><td>Panel currently drawing that slot, or an empty string.</td></tr>
+                    <tr id="clusterSlots"><td><code>clusterSlots(String clusterId)</code></td><td><code>List&lt;String&gt;</code></td><td>Slots explicitly owned by a panel; empty means it is the catch-all panel.</td></tr>
+                    <tr id="createCluster"><td><code>createCluster(String name)</code></td><td><code>String</code></td><td>Creates an empty panel and returns its id.</td></tr>
+                    <tr id="splitToCluster"><td><code>splitToCluster(String name, Collection&lt;String&gt; slotKeys)</code></td><td><code>String</code></td><td>Creates a panel and moves those slots into it, in one call.</td></tr>
+                    <tr id="assignSlotToCluster"><td><code>assignSlotToCluster(String slotKey, String clusterId)</code></td><td><code>void</code></td><td>Moves one slot. A blank or unknown id leaves it to the catch-all panel.</td></tr>
+                    <tr id="removeCluster"><td><code>removeCluster(String clusterId)</code></td><td><code>boolean</code></td><td>Deletes the panel and switches its slots off, so deleting never hands them to another panel. The last panel cannot be removed. <code>false</code> when nothing changed.</td></tr>
+                    <tr id="mergeClusters"><td><code>mergeClusters(String sourceId, String destId, boolean takeSourceLook)</code></td><td><code>boolean</code></td><td>Moves all slots of <code>sourceId</code> into <code>destId</code> and removes the source; optionally the source look becomes the destination look. <code>false</code> for equal or unknown ids.</td></tr>
+                    <tr id="renameCluster"><td><code>renameCluster(String clusterId, String name)</code></td><td><code>boolean</code></td><td>Sets the panel label, truncated to 20 characters. <code>false</code> for an unknown id or blank name.</td></tr>
+                    <tr id="setClusterEnabled"><td><code>setClusterEnabled(String clusterId, boolean enabled)</code></td><td><code>void</code></td><td>Hides or shows one panel; its settings are kept.</td></tr>
+                    <tr id="clusterBounds"><td><code>clusterBounds(String clusterId)</code></td><td><code>int[]</code></td><td><code>x, y, w, h</code> of one panel, or all zeroes when it is not drawn.</td></tr>
+                    <tr id="hudBounds"><td><code>hudBounds()</code></td><td><code>int[]</code></td><td>Union of every panel, so another overlay can avoid the HUD.</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="effects">Effects<a class="tsd-anchor-icon" href="#effects" aria-label="Permalink">#</a></h2>
+            <p>An effect is a per-frame transform of one slot icon. Built-ins cover the common cases; a mod
+                can register its own.</p>
+            <h3 id="built-in-effects">Built-in ids<a class="tsd-anchor-icon" href="#built-in-effects" aria-label="Permalink">#</a></h3>
+            <table data-section="Effects">
+                <thead>
+                    <tr><th>Id</th><th>Effect</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>spin</code></td><td>2D wheel rotation, 360 deg/s (best for flat icons).</td></tr>
+                    <tr><td><code>spin_3d</code></td><td>3D coin rotation, 300 deg/s.</td></tr>
+                    <tr><td><code>spin_fast</code></td><td>2D rotation, 720 deg/s.</td></tr>
+                    <tr><td><code>spin_3d_fast</code></td><td>3D rotation, 720 deg/s.</td></tr>
+                    <tr><td><code>bob</code></td><td>Gentle vertical float.</td></tr>
+                    <tr><td><code>pulse</code></td><td>Scale and accent glow pulse.</td></tr>
+                    <tr><td><code>shake</code></td><td>Small jitter.</td></tr>
+                    <tr><td><code>flash</code></td><td>Glow blink.</td></tr>
+                    <tr><td><code>rainbow</code></td><td>Hue-cycling glow.</td></tr>
+                    <tr><td><code>hover</code></td><td>Small lift and glow; used automatically on hover.</td></tr>
+                    <tr><td><code>none</code></td><td>No-op.</td></tr>
+                </tbody>
+            </table>
+<pre><code>LoadoutTcApi.playEffect("accessories/ring/0", "spin", 3000);           // 3 seconds
+LoadoutTcApi.playEffect("accessories/ring/0", "pulse", 0, 0xFFFF6B6B); // until cleared, red
+LoadoutTcApi.clearEffect("accessories/ring/0");
+LoadoutTcApi.clearAllEffects();</code></pre>
+            <p><code>durationMillis &lt;= 0</code> means "until cleared". <code>color</code> is ARGB;
+                <code>0</code> uses the HUD accent. Both <code>playEffect</code> overloads return
+                <code>false</code> for a blank slot key or an unknown effect id.</p>
+            <table class="api" data-section="Effects">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="playEffect"><td><code>playEffect(String slotKey, String effectId, long durationMillis, int color)</code></td><td><code>boolean</code></td><td>Plays one effect on one slot with an ARGB override.</td></tr>
+                    <tr id="playEffect-short"><td><code>playEffect(String slotKey, String effectId, long durationMillis)</code></td><td><code>boolean</code></td><td>Same, using the HUD accent.</td></tr>
+                    <tr id="clearEffect"><td><code>clearEffect(String slotKey)</code></td><td><code>void</code></td><td>Stops the timed effect on that slot; per-slot settings stay.</td></tr>
+                    <tr id="clearAllEffects"><td><code>clearAllEffects()</code></td><td><code>void</code></td><td>Stops every timed effect.</td></tr>
+                    <tr id="triggerFeaturedEffect"><td><code>triggerFeaturedEffect(long durationMillis)</code></td><td><code>boolean</code></td><td>Plays the pinned effect on the featured slot for that long.</td></tr>
+                    <tr id="triggerFeaturedEffect-short"><td><code>triggerFeaturedEffect()</code></td><td><code>boolean</code></td><td>Same with a 2000 ms duration.</td></tr>
+                    <tr id="setFeaturedSlot"><td><code>setFeaturedSlot(String slotKey)</code></td><td><code>void</code></td><td>Pins the featured slot; an empty string clears it. Persisted as <code>featuredSlot</code>.</td></tr>
+                    <tr id="featuredSlot"><td><code>featuredSlot()</code></td><td><code>String</code></td><td>Current pinned key, or an empty string.</td></tr>
+                    <tr id="setFeaturedEffect"><td><code>setFeaturedEffect(String effectId)</code></td><td><code>void</code></td><td>Changes the pinned effect. Unknown ids are ignored.</td></tr>
+                    <tr id="registerEffect"><td><code>registerEffect(String id, SlotEffect effect)</code></td><td><code>boolean</code></td><td>Registers or replaces a custom effect. <code>false</code> for a blank id or null effect.</td></tr>
+                    <tr id="unregisterEffect"><td><code>unregisterEffect(String id)</code></td><td><code>boolean</code></td><td>Removes a custom effect; <code>false</code> when it was not registered.</td></tr>
+                    <tr id="method-effects"><td><code>effects()</code></td><td><code>Set&lt;String&gt;</code></td><td>Every available effect id, including built-ins.</td></tr>
+                    <tr id="setSlotEffect"><td><code>setSlotEffect(String slotKey, String effectId)</code></td><td><code>void</code></td><td>Permanent per-slot effect. Unknown ids are ignored; <code>"none"</code> disables it. Glow effects use the slot's light channel.</td></tr>
+                    <tr id="clearSlotOverrides"><td><code>clearSlotOverrides(String slotKey)</code></td><td><code>void</code></td><td>Drops every per-slot override: effect, cooldown style and durability style.</td></tr>
+                </tbody>
+            </table>
+
+            <h3 id="custom-effects">Custom effects<a class="tsd-anchor-icon" href="#custom-effects" aria-label="Permalink">#</a></h3>
+<pre><code>LoadoutTcApi.registerEffect("sparkle", context -&gt; {
+    float wave = 0.5f + 0.5f * (float) Math.sin(context.seconds() * 9.0f);
+    return new EffectFrame(
+            0.0f,                       // offsetX
+            0.0f,                       // offsetY
+            1.0f + wave * 0.06f,        // scale
+            0.0f,                       // spinDegrees
+            false,                      // threeD
+            0xFFFFD166,                 // glowColor (ARGB)
+            wave * 0.6f                 // glowStrength 0..1
+    );
+});</code></pre>
+            <p><code>SlotEffect</code> is a functional interface:
+                <code>EffectFrame apply(EffectContext context)</code>. It runs on the client render thread
+                once per frame, so keep it cheap.</p>
+            <table data-section="EffectContext">
+                <thead>
+                    <tr><th>Field</th><th>Meaning</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>slotKey()</code></td><td>Key of the slot being drawn.</td></tr>
+                    <tr><td><code>stack()</code></td><td>Its <code>ItemStack</code>.</td></tr>
+                    <tr><td><code>seconds()</code></td><td>Seconds since the effect started (or since launch for featured/hover).</td></tr>
+                    <tr><td><code>progress()</code></td><td><code>0..1</code> for timed effects, <code>1</code> for permanent effects.</td></tr>
+                    <tr><td><code>featured()</code></td><td>Whether this is the pinned/featured slot.</td></tr>
+                    <tr><td><code>hovered()</code></td><td>Whether the mouse is over it in the editor.</td></tr>
+                    <tr><td><code>accentColor()</code></td><td>Active accent, or the colour passed to <code>playEffect</code>.</td></tr>
+                </tbody>
+            </table>
+            <table data-section="EffectFrame">
+                <thead>
+                    <tr><th>Field</th><th>Range</th><th>Meaning</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>offsetX</code> / <code>offsetY</code></td><td>GUI pixels</td><td>Translates the icon.</td></tr>
+                    <tr><td><code>scale</code></td><td>&gt; 0</td><td>Uniform scale; values <code>&lt;= 0</code> become <code>1</code>.</td></tr>
+                    <tr><td><code>spinDegrees</code></td><td>degrees</td><td>Rotation, around the vertical axis when <code>threeD</code> is true.</td></tr>
+                    <tr><td><code>threeD</code></td><td>boolean</td><td>3D coin spin instead of flat 2D spin.</td></tr>
+                    <tr><td><code>glowColor</code></td><td>ARGB</td><td><code>0</code> means no glow.</td></tr>
+                    <tr><td><code>glowStrength</code></td><td>0..1</td><td>Clamped on construction.</td></tr>
+                </tbody>
+            </table>
+            <p>Shortcuts: <code>EffectFrame.NONE</code>, <code>EffectFrame.spin(degrees)</code>,
+                <code>EffectFrame.offset(x, y)</code>, <code>EffectFrame.scale(s)</code> and
+                <code>EffectFrame.glow(color, strength)</code>.</p>
+
+            <h2 id="layers">Feedback layers<a class="tsd-anchor-icon" href="#layers" aria-label="Permalink">#</a></h2>
+            <p>Durability, cooldown and ability each own an options object: colour, thickness, opacity,
+                text format and motion. These setters change the global layer options; per-slot styles are
+                set separately at the end of the table. Values are clamped to the stated range.</p>
+            <table class="api" data-section="Feedback layers">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="setCooldownThickness"><td><code>setCooldownThickness(int pixels)</code></td><td><code>void</code></td><td>Cooldown stroke or bar height, <code>1..4</code>.</td></tr>
+                    <tr id="setCooldownOpacity"><td><code>setCooldownOpacity(int percent)</code></td><td><code>void</code></td><td>Cooldown layer opacity, <code>30..100</code>.</td></tr>
+                    <tr id="setCooldownText"><td><code>setCooldownText(String kind)</code></td><td><code>void</code></td><td><code>seconds</code>, <code>int</code> or <code>percent</code>; other values are ignored.</td></tr>
+                    <tr id="setCooldownPulse"><td><code>setCooldownPulse(boolean enabled)</code></td><td><code>void</code></td><td>Blink when the cooldown is nearly done.</td></tr>
+                    <tr id="setCooldownReverse"><td><code>setCooldownReverse(boolean enabled)</code></td><td><code>void</code></td><td>Draw the arc, bar or frame from the opposite end.</td></tr>
+                    <tr id="setCooldownTrack"><td><code>setCooldownTrack(boolean enabled)</code></td><td><code>void</code></td><td>Faint background track behind the fill.</td></tr>
+                    <tr id="setAbilityThickness"><td><code>setAbilityThickness(int pixels)</code></td><td><code>void</code></td><td>Ability stroke or bar height, <code>1..4</code>.</td></tr>
+                    <tr id="setAbilityOpacity"><td><code>setAbilityOpacity(int percent)</code></td><td><code>void</code></td><td>Ability layer opacity, <code>30..100</code>.</td></tr>
+                    <tr id="setAbilityText"><td><code>setAbilityText(String kind)</code></td><td><code>void</code></td><td><code>seconds</code>, <code>int</code> or <code>percent</code>; other values are ignored.</td></tr>
+                    <tr id="setAbilityPulse"><td><code>setAbilityPulse(boolean enabled)</code></td><td><code>void</code></td><td>Blink when the timer is nearly done.</td></tr>
+                    <tr id="setAbilityReverse"><td><code>setAbilityReverse(boolean enabled)</code></td><td><code>void</code></td><td>Draw the timer from the opposite end.</td></tr>
+                    <tr id="setAbilityTrack"><td><code>setAbilityTrack(boolean enabled)</code></td><td><code>void</code></td><td>Faint background track behind the timer.</td></tr>
+                    <tr id="setDurabilityThickness"><td><code>setDurabilityThickness(int pixels)</code></td><td><code>void</code></td><td>Durability bar, pips or ring stroke, <code>1..4</code>.</td></tr>
+                    <tr id="setDurabilityOpacity"><td><code>setDurabilityOpacity(int percent)</code></td><td><code>void</code></td><td>Durability layer opacity, <code>30..100</code>.</td></tr>
+                    <tr id="setDurabilityTrack"><td><code>setDurabilityTrack(boolean enabled)</code></td><td><code>void</code></td><td>Background track behind the durability fill.</td></tr>
+                    <tr id="setSlotCooldownStyle"><td><code>setSlotCooldownStyle(String slotKey, String styleId)</code></td><td><code>void</code></td><td>Cooldown style for one slot: <code>arc</code>, <code>text</code>, <code>bar</code>, <code>frame</code> or <code>off</code>. Unknown ids fall back to <code>arc</code>.</td></tr>
+                    <tr id="setSlotDurabilityStyle"><td><code>setSlotDurabilityStyle(String slotKey, String styleId)</code></td><td><code>void</code></td><td>Durability style for one slot: <code>bar</code>, <code>segments</code>, <code>pips</code>, <code>text</code>, <code>ring</code>, <code>battery</code> or <code>off</code>. Unknown ids fall back to <code>bar</code>.</td></tr>
+                </tbody>
+            </table>
+            <p>Global shapes are picked with <a href="#setCooldownStyle"><code>setCooldownStyle</code></a> and
+                <a href="#setDurabilityStyle"><code>setDurabilityStyle</code></a>; per-slot effects with
+                <a href="#setSlotEffect"><code>setSlotEffect</code></a>.</p>
+
+            <h2 id="ability">Ability timers<a class="tsd-anchor-icon" href="#ability" aria-label="Permalink">#</a></h2>
+            <p>Vanilla exposes item cooldowns only. For skills, channels or buffs, push a timer yourself;
+                the HUD draws a countdown in the configured style.</p>
+<pre><code>// 4.5 s cast on the ring slot; colour 0 uses the configured accent
+LoadoutTcApi.showAbility("accessories/ring/0", 4500L);
+LoadoutTcApi.showAbility("accessories/necklace/0", 4500L, 0xFF7C9EFF);
+LoadoutTcApi.hideAbility("accessories/ring/0");
+LoadoutTcApi.clearAbilities();</code></pre>
+            <table class="api" data-section="Ability timers">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="showAbility"><td><code>showAbility(String slotKey, long durationMillis)</code></td><td><code>void</code></td><td>Starts or restarts a timer using the accent colour.</td></tr>
+                    <tr id="showAbility-color"><td><code>showAbility(String slotKey, long durationMillis, int argb)</code></td><td><code>void</code></td><td>Same with an explicit ARGB colour; <code>0</code> falls back to the accent.</td></tr>
+                    <tr id="hideAbility"><td><code>hideAbility(String slotKey)</code></td><td><code>void</code></td><td>Stops the timer on one slot.</td></tr>
+                    <tr id="clearAbilities"><td><code>clearAbilities()</code></td><td><code>void</code></td><td>Stops every ability timer at once.</td></tr>
+                    <tr id="setAbilityStyle"><td><code>setAbilityStyle(String styleId)</code></td><td><code>void</code></td><td>Chooses the drawing style; unknown ids fall back to <code>ring</code>.</td></tr>
+                </tbody>
+            </table>
+            <table data-section="Ability timers">
+                <thead>
+                    <tr><th>Style</th><th>Look</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>ring</code></td><td>Arc just outside the icon.</td></tr>
+                    <tr><td><code>bar</code></td><td>2 px strip on the slot's top edge.</td></tr>
+                    <tr><td><code>text</code></td><td>Remaining seconds over the icon.</td></tr>
+                    <tr><td><code>frame</code></td><td>Progress traced along the slot frame; follows hex, rounded or square shapes.</td></tr>
+                    <tr><td><code>off</code></td><td>Hidden.</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="look">Look and feel<a class="tsd-anchor-icon" href="#look" aria-label="Permalink">#</a></h2>
+            <p>Styles, size, accent and arrangement are global config values. Every setter here saves
+                <code>config/loadouttc.json</code> immediately.</p>
+            <table class="api" data-section="Look and feel">
+                <thead>
+                    <tr><th>Method</th><th>Returns</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr id="styles"><td><code>styles()</code></td><td><code>List&lt;String&gt;</code></td><td>Every style id (31). The first ten are the editor gallery.</td></tr>
+                    <tr id="setStyle"><td><code>setStyle(String styleId)</code></td><td><code>void</code></td><td>Switches the whole HUD style. Unknown ids fall back to <code>vanilla</code>.</td></tr>
+                    <tr id="setSize"><td><code>setSize(String size)</code></td><td><code>void</code></td><td><code>auto</code>, <code>small</code>, <code>medium</code>, <code>large</code>, <code>xlarge</code>, <code>huge</code>, <code>giant</code> or <code>custom</code>; other values are ignored.</td></tr>
+                    <tr id="setCustomScale"><td><code>setCustomScale(float scale)</code></td><td><code>void</code></td><td>Switches to <code>custom</code> and clamps to <code>0.5..3.0</code>.</td></tr>
+                    <tr id="setDurabilityStyle"><td><code>setDurabilityStyle(String styleId)</code></td><td><code>void</code></td><td>Global durability shape; <code>off</code> also disables the layer. Unknown ids fall back to <code>bar</code>.</td></tr>
+                    <tr id="setCooldownStyle"><td><code>setCooldownStyle(String styleId)</code></td><td><code>void</code></td><td>Global cooldown shape; <code>off</code> also disables the layer. Unknown ids fall back to <code>arc</code>.</td></tr>
+                    <tr id="cooldownStyles"><td><code>cooldownStyles()</code></td><td><code>List&lt;String&gt;</code></td><td>Every id <code>setCooldownStyle</code> accepts.</td></tr>
+                    <tr id="setLayoutMode"><td><code>setLayoutMode(String mode)</code></td><td><code>void</code></td><td><code>vertical</code>, <code>horizontal</code>, <code>grid</code> or <code>circle</code>; other values are ignored.</td></tr>
+                    <tr id="layoutMode"><td><code>layoutMode()</code></td><td><code>String</code></td><td>Current resolved arrangement.</td></tr>
+                    <tr id="setColumns"><td><code>setColumns(int columns)</code></td><td><code>void</code></td><td>Grid columns, clamped to <code>1..8</code>.</td></tr>
+                    <tr id="setCircleRadius"><td><code>setCircleRadius(int radius)</code></td><td><code>void</code></td><td>Ring radius in GUI pixels, clamped to <code>16..200</code>.</td></tr>
+                    <tr id="setAccent"><td><code>setAccent(int argb)</code></td><td><code>void</code></td><td>Sets the accent; the alpha channel is ignored and only RGB is stored.</td></tr>
+                    <tr id="setEnabled"><td><code>setEnabled(boolean enabled)</code></td><td><code>void</code></td><td>Hides or shows the whole HUD; all settings are kept.</td></tr>
+                    <tr id="openEditor"><td><code>openEditor()</code></td><td><code>void</code></td><td>Opens the editor when a player is in game and no other screen is open.</td></tr>
+                    <tr id="reload"><td><code>reload()</code></td><td><code>void</code></td><td>Re-reads <code>loadouttc.json</code>, for example after another mod edited it.</td></tr>
+                </tbody>
+            </table>
+
+            <h3 id="sizes">Size presets<a class="tsd-anchor-icon" href="#sizes" aria-label="Permalink">#</a></h3>
+            <p><code>auto</code> is one HUD unit per GUI unit, so a slot matches a vanilla hotbar slot at
+                every GUI scale. Larger presets exist because the vanilla size can read small on a big
+                screen.</p>
+            <table data-section="Look and feel">
+                <thead>
+                    <tr><th>Id</th><th>Scale</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>auto</code></td><td>1.00x of the GUI scale</td></tr>
+                    <tr><td><code>small</code></td><td>0.80x</td></tr>
+                    <tr><td><code>medium</code></td><td>1.00x</td></tr>
+                    <tr><td><code>large</code></td><td>1.25x</td></tr>
+                    <tr><td><code>xlarge</code></td><td>1.50x</td></tr>
+                    <tr><td><code>huge</code></td><td>2.00x</td></tr>
+                    <tr><td><code>giant</code></td><td>3.00x</td></tr>
+                    <tr><td><code>custom</code></td><td>0.50 - 3.00x</td></tr>
+                </tbody>
+            </table>
+
+            <h3 id="style-ids">Style ids<a class="tsd-anchor-icon" href="#style-ids" aria-label="Permalink">#</a></h3>
+            <p><code>styles()</code> returns all 31 ids. Ten are shown in the editor gallery; the rest still
+                load from an existing config:</p>
+<pre><code>vanilla, steel, hex, liquid_glass, bare, fantasy_rpg, carbon, parchment, arcane, outline,
+notion, glassmorphism, neumorphism, bento, dynamic_island, dock, material_expressive, terminal,
+pixel_vanilla, minimal, chips, sticker, clay, neon, brutalist, editorial, frost, arcade,
+grouped, compact, scifi_tactical</code></pre>
+            <p>The first line is the gallery set, in menu order. <code>bare</code>, <code>minimal</code>,
+                <code>chips</code>, <code>sticker</code> and <code>outline</code> draw no outer panel.</p>
+
+            <h2 id="threading">Threading and safety<a class="tsd-anchor-icon" href="#threading" aria-label="Permalink">#</a></h2>
+            <ul>
+                <li>Call from the Minecraft client thread: tick, screen or render callbacks.</li>
+                <li>Never call from a dedicated server; there is no server-side HUD and no network traffic.</li>
+                <li>Effect maps are concurrent, but config setters write the config file. Batch changes
+                    instead of calling a setter every frame.</li>
+                <li>If Loadout TC may be absent, guard calls as described in
+                    <a href="#getting-started">Getting started</a>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <aside class="page-menu">
+        <div class="settings">
+            <label for="tsd-theme">Theme</label>
+            <select id="tsd-theme">
+                <option value="os">OS</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+        <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            On This Page
+        </h3>
+        <a href="#overview">Overview</a>
+        <a href="#getting-started">Getting started</a>
+        <a href="#keys">Slot keys</a>
+        <a href="#slotview">SlotView and SourceView</a>
+        <a href="#sources">Slot sources</a>
+        <a class="sub" href="#apislot">ApiSlot</a>
+        <a class="sub" href="#self-registering">Self-registering</a>
+        <a href="#selection">Slot selection and ordering</a>
+        <a href="#panels">Panels (clusters)</a>
+        <a href="#effects">Effects</a>
+        <a class="sub" href="#built-in-effects">Built-in ids</a>
+        <a class="sub" href="#custom-effects">Custom effects</a>
+        <a href="#layers">Feedback layers</a>
+        <a href="#ability">Ability timers</a>
+        <a href="#look">Look and feel</a>
+        <a class="sub" href="#sizes">Size presets</a>
+        <a class="sub" href="#style-ids">Style ids</a>
+        <a href="#threading">Threading and safety</a>
+    </aside>
+</div>
+
+<footer>
+    <div class="container">
+        <span>Loadout TC 1.0.0+1.21.1 &middot; MIT</span>
+        <nav class="footer-links" aria-label="Community">
+            <a href="https://ko-fi.com/toancao" target="_blank" rel="noopener noreferrer">Ko-fi</a>
+            <a href="https://www.youtube.com/@toancaomc" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://discord.gg/9rch87H9yM" target="_blank" rel="noopener noreferrer">Discord</a>
+            <a href="https://www.curseforge.com/members/toancao/projects" target="_blank" rel="noopener noreferrer">CurseForge</a>
+        </nav>
+        <span>This website is not affiliated with Mojang or Microsoft.</span>
+    </div>
+</footer>
+
+<dialog id="tsd-search" aria-label="Search the reference">
+    <input id="tsd-search-input" type="search" placeholder="Search methods, types, sections" autocomplete="off" spellcheck="false" />
+    <ul id="tsd-search-results"></ul>
+</dialog>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    var theme = localStorage.getItem("tsd-theme") || "os";
+    root.dataset.theme = theme;
+    var select = document.getElementById("tsd-theme");
+    select.value = theme;
+    select.addEventListener("change", function () {
+        localStorage.setItem("tsd-theme", select.value);
+        root.dataset.theme = select.value;
+    });
+
+    var index = [];
+    document.querySelectorAll("h2[id], h3[id]").forEach(function (heading) {
+        index.push({
+            title: heading.textContent.replace(/#\s*$/, "").trim(),
+            href: "#" + heading.id,
+            group: "Section"
+        });
+    });
+    document.querySelectorAll("tr[id]").forEach(function (row) {
+        var code = row.querySelector("td code");
+        if (!code) return;
+        var table = row.closest("table");
+        index.push({
+            title: code.textContent.trim(),
+            href: "#" + row.id,
+            group: table && table.getAttribute("data-section") ? table.getAttribute("data-section") : "Reference"
+        });
+    });
+    [
+        { title: "SlotView", href: "#slotview", group: "Type" },
+        { title: "SourceView", href: "#slotview", group: "Type" },
+        { title: "SlotSource", href: "#sources", group: "Type" },
+        { title: "ApiSlot", href: "#apislot", group: "Type" },
+        { title: "SlotEffect", href: "#custom-effects", group: "Type" },
+        { title: "EffectContext", href: "#custom-effects", group: "Type" },
+        { title: "EffectFrame", href: "#custom-effects", group: "Type" }
+    ].forEach(function (entry) { index.push(entry); });
+
+    var dialog = document.getElementById("tsd-search");
+    var input = document.getElementById("tsd-search-input");
+    var list = document.getElementById("tsd-search-results");
+
+    function render(query) {
+        var q = query.trim().toLowerCase();
+        var hits = index.filter(function (entry) {
+            return !q || entry.title.toLowerCase().indexOf(q) !== -1 ||
+                entry.group.toLowerCase().indexOf(q) !== -1;
+        });
+        list.innerHTML = "";
+        if (!hits.length) {
+            var empty = document.createElement("li");
+            empty.textContent = "No results";
+            empty.style.padding = "0.5rem 0.6rem";
+            empty.style.color = "var(--color-text-aside)";
+            list.appendChild(empty);
+            return;
+        }
+        hits.forEach(function (entry) {
+            var li = document.createElement("li");
+            var link = document.createElement("a");
+            link.href = entry.href;
+            link.textContent = entry.title;
+            var small = document.createElement("small");
+            small.textContent = entry.group;
+            link.appendChild(small);
+            li.appendChild(link);
+            list.appendChild(li);
+        });
+    }
+
+    document.getElementById("search-trigger").addEventListener("click", function () {
+        render("");
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+        }
+        input.focus();
+        input.select();
+    });
+    input.addEventListener("input", function () { render(input.value); });
+    dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) { dialog.close(); }
+    });
+    list.addEventListener("click", function () { dialog.close(); });
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "/" && !dialog.open && document.activeElement.tagName !== "INPUT") {
+            event.preventDefault();
+            document.getElementById("search-trigger").click();
+        }
+    });
+})();
+</script>
+</body>
+</html>

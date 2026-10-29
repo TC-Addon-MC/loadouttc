@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="os">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loadout TC - 1.0.0 | Equipment HUD for Fabric</title>
+<meta name="description" content="Loadout TC - a client-side equipment HUD for Fabric 1.21.1. Vanilla, Accessories, Trinkets and Curios in one styleable HUD, with an editor and an API." />
+<style>
+:root {
+    --color-background: #f2f4f8;
+    --color-background-secondary: #eff0f1;
+    --color-background-active: #d6d8da;
+    --color-accent: #c5c7c9;
+    --color-text: #222;
+    --color-text-aside: #5e5e5e;
+    --color-link: #1f70c2;
+    --color-focus: #3584e4;
+    --color-code-bg: #e7e9ec;
+    --color-shadow: rgba(0, 0, 0, 0.08);
+    --dim-header-height: 3.5rem;
+    --dim-page-menu-width: 300px;
+}
+html[data-theme="dark"] {
+    --color-background: #2b2e33;
+    --color-background-secondary: #1e2024;
+    --color-background-active: #343a40;
+    --color-accent: #9096a2;
+    --color-text: #f5f5f5;
+    --color-text-aside: #dddddd;
+    --color-link: #00aff4;
+    --color-focus: #4c97f2;
+    --color-code-bg: #24272b;
+    --color-shadow: rgba(0, 0, 0, 0.4);
+}
+@media (prefers-color-scheme: dark) {
+    html[data-theme="os"] {
+        --color-background: #2b2e33;
+        --color-background-secondary: #1e2024;
+        --color-background-active: #343a40;
+        --color-accent: #9096a2;
+        --color-text: #f5f5f5;
+        --color-text-aside: #dddddd;
+        --color-link: #00aff4;
+        --color-focus: #4c97f2;
+        --color-code-bg: #24272b;
+        --color-shadow: rgba(0, 0, 0, 0.4);
+    }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.6;
+}
+a { color: var(--color-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.875rem;
+}
+code {
+    background: var(--color-code-bg);
+    border-radius: 0.4em;
+    padding: 0.15em 0.35em;
+}
+pre {
+    background: var(--color-code-bg);
+    border-radius: 0.8em;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    line-height: 1.55;
+    margin: 0 0 1rem;
+}
+pre code { background: none; padding: 0; }
+.tsd-page-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: var(--dim-header-height);
+    background: var(--color-background-secondary);
+    border-bottom: 1px solid var(--color-accent);
+}
+.tsd-toolbar-contents {
+    max-width: 1700px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.tsd-toolbar-contents .title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+}
+.tsd-toolbar-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.tsd-toolbar-links a,
+.tsd-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-text-aside);
+    border: 1px solid transparent;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.875rem;
+    background: none;
+    cursor: pointer;
+}
+.tsd-toolbar-links a:hover,
+.tsd-widget:hover {
+    color: var(--color-text);
+    border-color: var(--color-accent);
+    text-decoration: none;
+}
+.container-main {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--dim-page-menu-width);
+    gap: 2.5rem;
+    align-items: start;
+}
+.col-content { min-width: 0; }
+.tsd-page-title h1 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-accent);
+}
+.tsd-typography h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2.4rem 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--color-accent);
+    scroll-margin-top: calc(var(--dim-header-height) + 1rem);
+    position: relative;
+}
+.tsd-typography h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.6rem 0 0.5rem;
+    scroll-margin-top: calc(var(--dim-header-height) + 1rem);
+}
+.tsd-anchor-icon {
+    color: var(--color-text-aside);
+    font-weight: 400;
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.12s;
+}
+h2:hover .tsd-anchor-icon { opacity: 1; }
+p { margin: 0 0 1rem; }
+ul, ol { margin: 0 0 1rem; padding-left: 1.5rem; }
+li { margin: 0.3rem 0; }
+.lead { font-size: 1.05rem; }
+.subtitle { color: var(--color-text-aside); }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.25rem;
+    font-size: 0.94rem;
+}
+th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--color-accent);
+    vertical-align: top;
+}
+th { font-weight: 600; }
+tbody tr:hover { background: var(--color-background-secondary); }
+.badge {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    margin-right: 0.35rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--color-text-aside);
+    white-space: nowrap;
+}
+.panel {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.8em;
+    padding: 0.9rem 1rem;
+    margin: 0 0 1.25rem;
+}
+.panel p:last-child { margin-bottom: 0; }
+kbd {
+    display: inline-block;
+    background: var(--color-code-bg);
+    border: 1px solid var(--color-accent);
+    border-bottom-width: 2px;
+    border-radius: 0.35em;
+    padding: 0.05em 0.4em;
+    font-family: inherit;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+.page-menu {
+    position: sticky;
+    top: calc(var(--dim-header-height) + 1.5rem);
+    font-size: 0.875rem;
+}
+.page-menu h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-aside);
+    margin: 0 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.page-menu a {
+    display: block;
+    color: var(--color-text);
+    padding: 0.25rem 0;
+    opacity: 0.85;
+}
+.page-menu a:hover { color: var(--color-link); opacity: 1; text-decoration: none; }
+.page-menu .settings {
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.page-menu label {
+    display: block;
+    color: var(--color-text-aside);
+    margin-bottom: 0.35rem;
+}
+.page-menu select {
+    width: 100%;
+    background: var(--color-background-secondary);
+    color: var(--color-text);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.4rem;
+    padding: 0.35rem;
+    font: inherit;
+}
+footer {
+    border-top: 1px solid var(--color-accent);
+    color: var(--color-text-aside);
+    font-size: 0.875rem;
+}
+footer .container {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+.footer-links a { color: var(--color-text-aside); }
+.footer-links a:hover { color: var(--color-link); }
+dialog#tsd-search {
+    width: min(48rem, 92vw);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.8em;
+    background: var(--color-background);
+    color: var(--color-text);
+    padding: 1rem;
+    box-shadow: 0 12px 40px var(--color-shadow);
+}
+dialog#tsd-search::backdrop { background: rgba(0, 0, 0, 0.35); }
+dialog#tsd-search input {
+    width: 100%;
+    font: inherit;
+    color: var(--color-text);
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-accent);
+    border-radius: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+dialog#tsd-search ul { list-style: none; margin: 0; padding: 0; max-height: 340px; overflow-y: auto; }
+dialog#tsd-search li a {
+    display: block;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.4rem;
+    color: var(--color-text);
+}
+dialog#tsd-search li a:hover, dialog#tsd-search li a.active {
+    background: var(--color-background-active);
+    text-decoration: none;
+}
+dialog#tsd-search li small { display: block; color: var(--color-text-aside); }
+@media (max-width: 1023px) {
+    .container-main { grid-template-columns: minmax(0, 1fr); }
+    .page-menu { display: none; }
+}
+@media (max-width: 600px) {
+    .tsd-toolbar-links a span { display: none; }
+    .tsd-page-title h1 { font-size: 1.5rem; }
+    .tsd-typography h2 { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="tsd-page-toolbar">
+    <div class="tsd-toolbar-contents">
+        <a href="index.html" class="title">Loadout TC - 1.0.0</a>
+        <div class="tsd-toolbar-links">
+            <button class="tsd-widget" id="search-trigger" aria-label="Search the docs">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="4.75" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+                <span>Search</span>
+            </button>
+            <a href="https://ko-fi.com/toancao" target="_blank" rel="noopener noreferrer" aria-label="Support on Ko-fi"><span>Ko-fi</span></a>
+            <a href="api.html" aria-label="API reference"><span>API reference</span></a>
+            <a href="../README.md" aria-label="Readme"><span>Readme</span></a>
+        </div>
+    </div>
+</header>
+
+<div class="container-main">
+    <div class="col-content">
+        <div class="tsd-page-title">
+            <h1>Loadout TC</h1>
+        </div>
+
+        <div class="tsd-typography">
+            <p class="lead">A client-side equipment HUD for Fabric 1.21.1. Loadout TC reads
+                <strong>Vanilla</strong>, <strong>Accessories</strong>, <strong>Trinkets</strong> and
+                <strong>Curios</strong> through one model, draws them with a styleable renderer, and lets
+                other mods add slot sources, effects and ability timers.</p>
+
+            <p>
+                <span class="badge">Fabric 1.21.1</span>
+                <span class="badge">Client side</span>
+                <span class="badge">MIT</span>
+                <span class="badge">API 4</span>
+            </p>
+
+            <table>
+                <tbody>
+                    <tr><th style="width: 34%">Version</th><td><code>1.0.0+1.21.1</code></td></tr>
+                    <tr><th>Minecraft</th><td>1.21.1 (Fabric Loader 0.16+)</td></tr>
+                    <tr><th>Requires</th><td>Fabric API; at least one of Accessories, Trinkets, Curios</td></tr>
+                    <tr><th>Side</th><td>Client only, nothing to install on a server</td></tr>
+                    <tr><th>Config</th><td><code>config/loadouttc.json</code></td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="what-it-does">What it does<a class="tsd-anchor-icon" href="#what-it-does" aria-label="Permalink">#</a></h2>
+            <ul>
+                <li>One HUD for every equipment mod; a source that is missing is simply skipped.</li>
+                <li>Slot menu with one tab per source, per-slot ticks, five sort orders and manual
+                    <code>&#9650;</code> <code>&#9660;</code> ordering.</li>
+                <li>Several independent panels on screen, each with its own slots, position and look.</li>
+                <li>Durability, cooldown and ability layers, each with its own style, colour, thickness and text.</li>
+                <li>In-game editor with a live preview; every change is saved automatically.</li>
+            </ul>
+
+            <h2 id="install">Install<a class="tsd-anchor-icon" href="#install" aria-label="Permalink">#</a></h2>
+            <ol>
+                <li>Install <strong>Fabric Loader</strong> and <strong>Fabric API</strong> for Minecraft 1.21.1.</li>
+                <li>Install at least one of <a href="https://modrinth.com/mod/accessories">Accessories</a>,
+                    <a href="https://modrinth.com/mod/trinkets">Trinkets</a> or
+                    <a href="https://modrinth.com/mod/curios">Curios</a>.</li>
+                <li>Drop <code>loadouttc-1.0.0+1.21.1.jar</code> into <code>.minecraft/mods</code>.</li>
+                <li>Launch the game and press <kbd>H</kbd>.</li>
+            </ol>
+
+            <div class="panel">
+                <p><strong>Curios on Fabric 1.21.1.</strong> Curios 9.5.1 is published for NeoForge, so the
+                    mod talks to it reflectively and only activates when the API is visible, for example
+                    through Sinytra Connector. Without it, the Accessories and Trinkets providers work
+                    normally.</p>
+            </div>
+
+            <h2 id="controls">Controls<a class="tsd-anchor-icon" href="#controls" aria-label="Permalink">#</a></h2>
+            <table>
+                <thead>
+                    <tr><th>Input</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>H</kbd></td><td>Open / close the editor</td></tr>
+                    <tr><td><kbd>Tab</kbd> / <strong>Preview</strong></td><td>Hide the editor and watch the HUD over the live world</td></tr>
+                    <tr><td>Drag the panel</td><td>Move it; the anchor becomes <code>CUSTOM</code></td></tr>
+                    <tr><td>Scroll</td><td>Size <code>0.5 - 3.0x</code> (switches to Custom)</td></tr>
+                    <tr><td>Shift + scroll</td><td>Opacity <code>20 - 100%</code></td></tr>
+                    <tr><td>Ctrl + scroll</td><td>Icon size <code>12 - 40 px</code></td></tr>
+                    <tr><td>Right-click a slot</td><td>Select it for per-slot FX, cooldown and durability</td></tr>
+                    <tr><td><strong>Design</strong> / <strong>Slots</strong> / <strong>Pos</strong> / <strong>Size</strong></td><td>Design screen, slot menu, anchor cycle, size cycle</td></tr>
+                    <tr><td><kbd>Delete</kbd> / <strong>Reset</strong></td><td>Clear the selected slot's overrides / reset everything</td></tr>
+                    <tr><td><strong>Done</strong> / <kbd>Esc</kbd></td><td>Save and close</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="sizes">Sizes<a class="tsd-anchor-icon" href="#sizes" aria-label="Permalink">#</a></h2>
+            <p><code>Auto</code> keeps a slot at vanilla hotbar size for the current GUI scale. The presets
+                go well beyond it, so a HUD can be much larger than the hotbar:</p>
+            <table>
+                <thead>
+                    <tr><th>Preset</th><th>Scale</th><th>Use it when</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>Auto</code></td><td>1.00x of the GUI scale</td><td>You want the exact vanilla hotbar size</td></tr>
+                    <tr><td><code>S</code></td><td>0.80x</td><td>The HUD should stay out of the way</td></tr>
+                    <tr><td><code>M</code></td><td>1.00x</td><td>Default readable size</td></tr>
+                    <tr><td><code>L</code></td><td>1.25x</td><td>Slightly larger labels and icons</td></tr>
+                    <tr><td><code>XL</code></td><td>1.50x</td><td>Bigger HUD, still compact</td></tr>
+                    <tr><td><code>2x</code></td><td>2.00x</td><td>Big icons, living-room distance</td></tr>
+                    <tr><td><code>3x</code></td><td>3.00x</td><td>Maximum preset</td></tr>
+                    <tr><td><code>Custom</code></td><td>0.50 - 3.00x</td><td>Any value in between</td></tr>
+                </tbody>
+            </table>
+            <p>If the HUD would run off screen, it is scaled down just enough to stay visible.</p>
+
+            <h2 id="styles">Styles<a class="tsd-anchor-icon" href="#styles" aria-label="Permalink">#</a></h2>
+            <p>Ten styles sit in the editor gallery; older ids still load from existing configs. The look is
+                built from four independent axes: panel, slot, text and layout.</p>
+            <table>
+                <thead>
+                    <tr><th>Style</th><th>Look</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>vanilla</code></td><td>The real Minecraft inventory bevel, nothing else</td></tr>
+                    <tr><td><code>steel</code></td><td>Blue-steel frames, white focus ring, dark glass</td></tr>
+                    <tr><td><code>hex</code></td><td>Hexagonal wells with the gauge inside the plate</td></tr>
+                    <tr><td><code>liquid_glass</code></td><td>Layered translucency, light border, soft glow</td></tr>
+                    <tr><td><code>bare</code></td><td>No panel, no slots: only the item icons</td></tr>
+                    <tr><td><code>fantasy_rpg</code></td><td>Gilded double frame, torch-lit wood, gold type</td></tr>
+                    <tr><td><code>carbon</code></td><td>Matte black plates, rounded slots, crisp white type</td></tr>
+                    <tr><td><code>parchment</code></td><td>Warm paper, carved light slots, ink text</td></tr>
+                    <tr><td><code>arcane</code></td><td>Violet glass, hex wells, gold runes</td></tr>
+                    <tr><td><code>outline</code></td><td>No panel; rounded outlines and spaced uppercase labels</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="slots-and-panels">Slots and panels<a class="tsd-anchor-icon" href="#slots-and-panels" aria-label="Permalink">#</a></h2>
+            <ul>
+                <li><strong>Slots</strong> opens the slot menu: tabs per source, a heading and on/off switch per
+                    vanilla group, and <code>All / Checked</code>, <code>Empty</code>, <code>Sort</code> and
+                    <code>Check all / Clear</code> in one row.</li>
+                <li>A <strong>panel</strong> is an independent HUD. Split one off to keep accessories in another
+                    corner; merge panels back without losing slots.</li>
+                <li>Any slot no panel claims falls into the <em>rest</em> panel, so a fresh install behaves like
+                    a single HUD.</li>
+            </ul>
+
+            <h2 id="feedback-layers">Feedback layers<a class="tsd-anchor-icon" href="#feedback-layers" aria-label="Permalink">#</a></h2>
+            <table>
+                <thead>
+                    <tr><th>Layer</th><th>Styles</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Durability</td><td><code>Bar</code>, <code>Seg</code>, <code>Pip</code>, <code>Txt</code>, <code>Val</code>, <code>Ring</code>, <code>Bat</code>, <code>Off</code></td></tr>
+                    <tr><td>Cooldown (vanilla)</td><td><code>Arc</code>, <code>Txt</code>, <code>Bar</code>, <code>Frame</code>, <code>Off</code></td></tr>
+                    <tr><td>Ability (from mods)</td><td><code>Ring</code>, <code>Bar</code>, <code>Text</code>, <code>Frame</code>, <code>Off</code></td></tr>
+                </tbody>
+            </table>
+            <p>Each layer has its own colour row, thickness <code>1-4 px</code>, opacity, track, pulse,
+                reverse and text mode. Full durability bars sit at 45% opacity; below 20% they turn red and
+                pulse.</p>
+
+            <h2 id="for-mod-authors">For mod authors<a class="tsd-anchor-icon" href="#for-mod-authors" aria-label="Permalink">#</a></h2>
+            <p>The API is optional and client-side. Add the jar as <code>compileOnly</code>, then either
+                register a source at runtime or declare the entrypoint so the HUD finds it at launch.</p>
+<pre><code>public final class MySource implements SlotSource {
+    public String id() { return "mymod"; }
+    public String label() { return "My Mod"; }
+    public boolean available() { return true; }
+
+    public void collect(Minecraft minecraft, Player player, boolean includeEmpty,
+                        List&lt;ApiSlot&gt; out) {
+        ItemStack stack = myEquippedStack(player);
+        if (!stack.isEmpty() || includeEmpty) {
+            out.add(new ApiSlot(id(), "charm", "Charm", "charm", 0, stack));
+        }
+    }
+}</code></pre>
+<pre><code>{
+  "entrypoints": {
+    "loadouttc:slot_source": ["com.example.mymod.MySlots"]
+  }
+}</code></pre>
+            <p>Effects, ability timers, panel control and slot queries are documented in the
+                <a href="api.html">API reference</a>.</p>
+
+            <h2 id="support">Support<a class="tsd-anchor-icon" href="#support" aria-label="Permalink">#</a></h2>
+            <p>Loadout TC is free and client-side. If it saves you time, you can support development or
+                follow updates here:</p>
+            <table>
+                <thead>
+                    <tr><th>Where</th><th>What</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><a href="https://ko-fi.com/toancao" target="_blank" rel="noopener noreferrer">Ko-fi</a></td><td>One-off support for the mod</td></tr>
+                    <tr><td><a href="https://www.youtube.com/@toancaomc" target="_blank" rel="noopener noreferrer">YouTube</a></td><td><code>@toancaomc</code> - demos and update videos</td></tr>
+                    <tr><td><a href="https://discord.gg/9rch87H9yM" target="_blank" rel="noopener noreferrer">Discord</a></td><td>Questions, bug reports and feedback</td></tr>
+                    <tr><td><a href="https://www.curseforge.com/members/toancao/projects" target="_blank" rel="noopener noreferrer">CurseForge</a></td><td>Every project by toancao</td></tr>
+                </tbody>
+            </table>
+
+            <h2 id="notes">Notes<a class="tsd-anchor-icon" href="#notes" aria-label="Permalink">#</a></h2>
+            <ul>
+                <li>Close Minecraft before replacing the jar; Fabric lazy-loads classes from the open file.</li>
+                <li>Hover tooltips are editor-only: in normal gameplay the cursor is grabbed.</li>
+                <li>Glass looks are layered translucency, not a framebuffer blur.</li>
+            </ul>
+        </div>
+    </div>
+
+    <aside class="page-menu">
+        <div class="settings">
+            <label for="tsd-theme">Theme</label>
+            <select id="tsd-theme">
+                <option value="os">OS</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+        <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            On This Page
+        </h3>
+        <a href="#what-it-does">What it does</a>
+        <a href="#install">Install</a>
+        <a href="#controls">Controls</a>
+        <a href="#sizes">Sizes</a>
+        <a href="#styles">Styles</a>
+        <a href="#slots-and-panels">Slots and panels</a>
+        <a href="#feedback-layers">Feedback layers</a>
+        <a href="#for-mod-authors">For mod authors</a>
+        <a href="#support">Support</a>
+        <a href="#notes">Notes</a>
+    </aside>
+</div>
+
+<footer>
+    <div class="container">
+        <span>Loadout TC 1.0.0+1.21.1 &middot; MIT</span>
+        <nav class="footer-links" aria-label="Community">
+            <a href="https://ko-fi.com/toancao" target="_blank" rel="noopener noreferrer">Ko-fi</a>
+            <a href="https://www.youtube.com/@toancaomc" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://discord.gg/9rch87H9yM" target="_blank" rel="noopener noreferrer">Discord</a>
+            <a href="https://www.curseforge.com/members/toancao/projects" target="_blank" rel="noopener noreferrer">CurseForge</a>
+        </nav>
+        <span>This website is not affiliated with Mojang or Microsoft.</span>
+    </div>
+</footer>
+
+<dialog id="tsd-search" aria-label="Search the docs">
+    <input id="tsd-search-input" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false" />
+    <ul id="tsd-search-results"></ul>
+</dialog>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    var theme = localStorage.getItem("tsd-theme") || "os";
+    root.dataset.theme = theme;
+    var select = document.getElementById("tsd-theme");
+    select.value = theme;
+    select.addEventListener("change", function () {
+        localStorage.setItem("tsd-theme", select.value);
+        root.dataset.theme = select.value;
+    });
+
+    var index = [
+        { title: "What it does", href: "#what-it-does", group: "Overview" },
+        { title: "Install", href: "#install", group: "Guide" },
+        { title: "Controls", href: "#controls", group: "Guide" },
+        { title: "Sizes", href: "#sizes", group: "Guide" },
+        { title: "Styles", href: "#styles", group: "Guide" },
+        { title: "Slots and panels", href: "#slots-and-panels", group: "Guide" },
+        { title: "Feedback layers", href: "#feedback-layers", group: "Guide" },
+        { title: "For mod authors", href: "#for-mod-authors", group: "API" },
+        { title: "API reference", href: "api.html", group: "API" },
+        { title: "SlotSource", href: "api.html#sources", group: "API" },
+        { title: "ApiSlot", href: "api.html#apislot", group: "API" },
+        { title: "EffectFrame", href: "api.html#custom-effects", group: "API" },
+        { title: "showAbility", href: "api.html#ability", group: "API" },
+        { title: "Panels (clusters)", href: "api.html#panels", group: "API" },
+        { title: "Support", href: "#support", group: "Overview" },
+        { title: "Notes", href: "#notes", group: "Overview" }
+    ];
+    var dialog = document.getElementById("tsd-search");
+    var input = document.getElementById("tsd-search-input");
+    var list = document.getElementById("tsd-search-results");
+
+    function render(query) {
+        var q = query.trim().toLowerCase();
+        var hits = index.filter(function (entry) {
+            return !q || entry.title.toLowerCase().indexOf(q) !== -1 ||
+                entry.group.toLowerCase().indexOf(q) !== -1;
+        });
+        list.innerHTML = "";
+        if (!hits.length) {
+            var empty = document.createElement("li");
+            empty.textContent = "No results";
+            empty.style.padding = "0.5rem 0.6rem";
+            empty.style.color = "var(--color-text-aside)";
+            list.appendChild(empty);
+            return;
+        }
+        hits.forEach(function (entry) {
+            var li = document.createElement("li");
+            var link = document.createElement("a");
+            link.href = entry.href;
+            link.textContent = entry.title;
+            var small = document.createElement("small");
+            small.textContent = entry.group;
+            link.appendChild(small);
+            li.appendChild(link);
+            list.appendChild(li);
+        });
+    }
+
+    document.getElementById("search-trigger").addEventListener("click", function () {
+        render("");
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+        }
+        input.focus();
+        input.select();
+    });
+    input.addEventListener("input", function () { render(input.value); });
+    dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) { dialog.close(); }
+    });
+    list.addEventListener("click", function () { dialog.close(); });
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "/" && !dialog.open && document.activeElement.tagName !== "INPUT") {
+            event.preventDefault();
+            document.getElementById("search-trigger").click();
+        }
+    });
+})();
+</script>
+</body>
+</html>

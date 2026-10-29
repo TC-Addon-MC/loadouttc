@@ -1,0 +1,47 @@
+# Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Minecraft dev run
+run/
+crash-reports/
+logs/
+*.log
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local tooling caches
+.codegraph/
+.qoder/
+
+# Local install output (staged jars, screenshots, logs)
+dist/
+
+# Planning notes: keep private, the public docs live in docs/API.md
+docs/imp/
+docs/plan/
+docs/plans/
+docs/drafts/
+
+# Reference clones and jars (keep them locally, do not commit nested git repos)
+tham_khao/
+libs_ref/
+
+agents.md
+tools/
+notes/
+.codegraph/
