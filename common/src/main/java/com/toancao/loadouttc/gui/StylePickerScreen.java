@@ -819,17 +819,19 @@ public final class StylePickerScreen extends Screen {
                     width, height, sideLayout, contentX, contentRight, clipTop, clipBottom,
                     tab, activeGroup(), sections.size(), targetAll, slotUnlocked, settingsLocked());
         }
-        if (clipped) {
-            graphics.enableScissor(contentX, clipTop, contentRight, clipBottom);
-        }
+        // Clipping is done per entry instead of with a scissor rectangle: on NeoForge the scissor
+        // path left the list invisible even though every value above was valid, so the cheap,
+        // platform-independent version wins. Entries outside the band are simply not drawn.
         int y = clipTop - (int) scroll;
         for (Section section : sections) {
             if (!section.group.equals(activeGroup())) {
                 continue;
             }
             // Headings get an accent tick and a brighter line so they read as titles, not rows.
-            graphics.fill(contentX, y + 1, contentX + 2, y + 8, UiTheme.ACCENT);
-            graphics.drawString(font, section.label, contentX + 7, y, UiTheme.TITLE, true);
+            if (y + 10 > clipTop && y < clipBottom) {
+                graphics.fill(contentX, y + 1, contentX + 2, y + 8, UiTheme.ACCENT);
+                graphics.drawString(font, section.label, contentX + 7, y, UiTheme.TITLE, true);
+            }
             y += 14;
             int x = contentX;
             for (Entry entry : section.entries) {
@@ -857,9 +859,6 @@ public final class StylePickerScreen extends Screen {
                 }
             }
             y += CHIP_H + SECTION_GAP;
-        }
-        if (clipped) {
-            graphics.disableScissor();
         }
         if (settingsLocked()) {
             drawLockScrim(graphics);
@@ -1246,6 +1245,9 @@ public final class StylePickerScreen extends Screen {
     }
 
     private void drawChip(GuiGraphics graphics, Chip chip, int mouseX, int mouseY) {
+        if (chip.y + CHIP_H <= clipTop || chip.y >= clipBottom) {
+            return;
+        }
         if (chip.enabled() && chip.width > 0 && chip.y + CHIP_H > clipTop
                 && chip.y < clipBottom && !settingsLocked()) {
             hits.add(new Hit(chip.x, chip.y, chip.width, CHIP_H, chip.action));
@@ -1277,6 +1279,9 @@ public final class StylePickerScreen extends Screen {
     }
 
     private void drawNumber(GuiGraphics graphics, Number number, int mouseX, int mouseY) {
+        if (number.y + CHIP_H <= clipTop || number.y >= clipBottom) {
+            return;
+        }
         int value = number.get.getAsInt();
         boolean auto = !number.signed && value < 0;
         int shown = auto ? number.auto : value;
