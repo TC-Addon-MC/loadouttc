@@ -897,10 +897,7 @@ public final class LoadoutTcApi {
 
     /** Mod version as Fabric reports it, e.g. {@code 1.0.0+1.21.1}. */
     public static String version() {
-        return net.fabricmc.loader.api.FabricLoader.getInstance()
-                .getModContainer(LoadoutTcClient.MOD_ID)
-                .map(container -> container.getMetadata().getVersion().getFriendlyString())
-                .orElse("unknown");
+        return com.toancao.loadouttc.platform.PlatformHolder.get().modVersion();
     }
 
     /**

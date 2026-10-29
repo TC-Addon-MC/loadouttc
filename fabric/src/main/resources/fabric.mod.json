@@ -12,7 +12,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.toancao.loadouttc.LoadoutTcClient"
+      "com.toancao.loadouttc.fabric.LoadoutTcFabric"
     ],
     "modmenu": [
       "com.toancao.loadouttc.integration.ModMenuIntegration"

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import net.fabricmc.loader.api.FabricLoader;
+import com.toancao.loadouttc.platform.Platform;
+import com.toancao.loadouttc.platform.PlatformHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -37,13 +38,13 @@ public final class HudData {
 
         registerInternal(new VanillaSource());
 
-        if (FabricLoader.getInstance().isModLoaded("accessories")) {
+        if (PlatformHolder.get().isModLoaded("accessories")) {
             tryRegister(new AccessoriesSource(), "Accessories");
         }
-        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+        if (PlatformHolder.get().isModLoaded("trinkets")) {
             tryRegister(new TrinketsSource(), "Trinkets");
         }
-        if (FabricLoader.getInstance().isModLoaded("curios")) {
+        if (PlatformHolder.get().isModLoaded("curios")) {
             tryRegister(new CuriosSource(), "Curios");
         }
 
@@ -60,11 +61,11 @@ public final class HudData {
      */
     private static void registerEntrypoints() {
         try {
-            for (var container : FabricLoader.getInstance()
-                    .getEntrypointContainers(SlotSource.ENTRYPOINT, Object.class)) {
-                String modId = container.getProvider().getMetadata().getId();
+            for (Platform.ModEntrypoint container : PlatformHolder.get()
+                    .entrypoints(SlotSource.ENTRYPOINT)) {
+                String modId = container.modId();
                 try {
-                    Object entry = container.getEntrypoint();
+                    Object entry = container.value();
                     if (entry instanceof SlotSource source) {
                         if (source.available()) {
                             registerInternal(new SlotSourceAdapter(source));

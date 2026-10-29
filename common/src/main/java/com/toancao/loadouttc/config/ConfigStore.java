@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import net.fabricmc.loader.api.FabricLoader;
+import com.toancao.loadouttc.platform.PlatformHolder;
 
 /** Loads and saves {@code config/loadouttc.json}. */
 public final class ConfigStore {
@@ -168,12 +168,12 @@ public final class ConfigStore {
     }
 
     private static Path path() {
-        return FabricLoader.getInstance().getConfigDir().resolve("loadouttc.json");
+        return PlatformHolder.get().configDir().resolve("loadouttc.json");
     }
 
     /** Carries settings over from the old Accessory HUD name so nothing is lost on rename. */
     private static void migrateLegacy() {
-        Path legacy = FabricLoader.getInstance().getConfigDir().resolve("accessoryhud.json");
+        Path legacy = PlatformHolder.get().configDir().resolve("accessoryhud.json");
         if (!Files.exists(legacy)) {
             return;
         }
