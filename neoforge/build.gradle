@@ -89,6 +89,8 @@ tasks.register('deployMod', Copy) {
             ?: 'D:/Modrinth/profiles/OptiFine for NeoForge/mods')
     from(tasks.named('jar').flatMap { it.archiveFile })
     into(target)
+    // Skipped on CI and on machines without that launcher profile.
+    onlyIf { target.parentFile != null && target.parentFile.isDirectory() }
     doFirst {
         if (target.isDirectory()) {
             target.listFiles()?.findAll {
@@ -96,6 +98,11 @@ tasks.register('deployMod', Copy) {
             }?.each { it.delete() }
         }
     }
+}
+
+// Release jars are named `loadouttc-<version>-neoforge.jar`.
+tasks.named('jar') {
+    archiveClassifier = 'neoforge'
 }
 
 tasks.named('build') {

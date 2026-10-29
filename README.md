@@ -1,10 +1,10 @@
 # Loadout TC
 
-A client-side equipment HUD for Fabric 1.21.1. It reads **Vanilla**, **Accessories**, **Trinkets**
-and **Curios** through one model, draws them with a styleable renderer, and exposes a small API so
-other mods can add slot sources, effects and ability timers.
+A client-side equipment HUD for Minecraft 1.21.1 on **Fabric and NeoForge**. It reads **Vanilla**,
+**Accessories**, **Trinkets** and **Curios** through one model, draws them with a styleable
+renderer, and exposes a small API so other mods can add slot sources, effects and ability timers.
 
-> Status: 1.0.0 · Fabric 1.21.1 · client side, nothing to install on the server.
+> Status: 1.0.0 · Minecraft 1.21.1 · Fabric + NeoForge · client side, nothing to install on the server.
 >
 > [Overview page](https://tc-addon-mc.github.io/loadouttc/) · [API reference](https://tc-addon-mc.github.io/loadouttc/api.html)
 
@@ -17,7 +17,7 @@ other mods can add slot sources, effects and ability timers.
 - Draggable panels: several independent HUDs on screen, each with its own slots and look.
 - Durability, cooldown and ability layers, each with its own style, colour, thickness and text.
 - In-game editor with live preview; everything is saved to `config/loadouttc.json`.
-- API for other mods, including self-registering slot sources via a Fabric entrypoint.
+- API for other mods: self-registering slot sources on Fabric, direct calls on NeoForge.
 
 ## Controls
 
@@ -104,17 +104,27 @@ Everything runs on the client; no call is required for the HUD to work.
 
 ## Install
 
-1. Install **Fabric Loader** and **Fabric API** for Minecraft **1.21.1**.
-2. Install at least one of [Accessories](https://modrinth.com/mod/accessories),
-   [Trinkets](https://modrinth.com/mod/trinkets) or [Curios](https://modrinth.com/mod/curios).
-3. Drop `loadouttc-1.0.0+1.21.1.jar` into `.minecraft/mods`.
+Pick the jar for your loader — they are not interchangeable:
+
+| Loader | File to download | Needs |
+|---|---|---|
+| Fabric | `loadouttc-1.0.0+1.21.1-fabric.jar` | Fabric Loader, Fabric API |
+| NeoForge | `loadouttc-1.0.0+1.21.1-neoforge.jar` | NeoForge 21.1+ (no Fabric API) |
+
+Then:
+
+1. Install the loader above for Minecraft **1.21.1**.
+2. Optionally install at least one equipment mod:
+   [Accessories](https://modrinth.com/mod/accessories) on either loader, Trinkets on Fabric, or
+   [Curios](https://modrinth.com/mod/curios) on NeoForge.
+3. Drop the jar into `.minecraft/mods`.
 4. Launch the game and press **H**.
 
-Curios 9.5.1 for 1.21.1 is NeoForge-only, so the mod talks to it reflectively and only activates
-when the API is visible (for example through Sinytra Connector). Without it, the other providers
-work normally.
+Curios has no Fabric build for 1.21.1, so the Fabric jar talks to it reflectively and only
+activates when the API is visible (for example through Sinytra Connector). On NeoForge it uses
+the real API instead.
 
-> Close Minecraft before replacing the jar. Fabric keeps it open and lazy-loads classes, so
+> Close Minecraft before replacing the jar. The loader keeps it open and lazy-loads classes, so
 > overwriting a running jar produces `ZipException: invalid LOC header`.
 
 ## Configuration
@@ -159,12 +169,15 @@ Settings are written 400 ms after the last change, and immediately on close or s
 
 ## Build
 
-Java 21, then `./gradlew build`. The jar lands in `build/libs/`; `./gradlew runClient` launches a
-dev client with the supported mods on the classpath.
+Java 21, then `./gradlew build`. Each loader builds its own jar into `<loader>/build/libs/`;
+`./gradlew :fabric:runClient` or `./gradlew :neoforge:runClient` launches a dev client.
+`./gradlew :fabric:devCheck` runs the headless logic check.
 
 ## Known limitations
 
-- Curios needs a Connector-style runtime on 1.21.1; pure Fabric uses Accessories and Trinkets.
+- Curios has no Fabric build for 1.21.1; on Fabric the API is reached reflectively, so it only
+  works through a Connector-style runtime. NeoForge uses the real API.
+- Trinkets is Fabric-only, so the NeoForge jar never shows a Trinkets tab.
 - Hover tooltips are editor-only: in normal gameplay the cursor is grabbed.
 - Glass looks are layered translucency, not a framebuffer blur.
 

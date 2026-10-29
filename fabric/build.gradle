@@ -109,6 +109,9 @@ tasks.register('deployMod', Copy) {
             ?: 'D:/Modrinth/profiles/OptiFabric/mods')
     from(tasks.named('remapJar').flatMap { it.archiveFile })
     into(target)
+    // Skipped on CI and on machines without that launcher profile: the copy is a local
+    // convenience, not part of a releasable build.
+    onlyIf { target.parentFile != null && target.parentFile.isDirectory() }
     doFirst {
         // The current name is overwritten; clear leftovers from older versions.
         if (target.isDirectory()) {
@@ -117,6 +120,14 @@ tasks.register('deployMod', Copy) {
             }?.each { it.delete() }
         }
     }
+}
+
+// Release jars are named `loadouttc-<version>-fabric.jar` so the two loaders cannot be mixed up.
+tasks.named('jar') {
+    archiveClassifier = 'fabric'
+}
+tasks.named('remapJar') {
+    archiveClassifier = 'fabric'
 }
 
 tasks.named('build') {
