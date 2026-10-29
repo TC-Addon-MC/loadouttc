@@ -6,7 +6,7 @@ other mods can add slot sources, effects and ability timers.
 
 > Status: 1.0.0 · Fabric 1.21.1 · client side, nothing to install on the server.
 >
-> [Overview page](docs/index.html) · [API reference](docs/api.html)
+> [Overview page](https://tc-addon-mc.github.io/loadouttc/) · [API reference](https://tc-addon-mc.github.io/loadouttc/api.html)
 
 ---
 
