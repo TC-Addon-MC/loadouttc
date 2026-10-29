@@ -25,7 +25,7 @@ if (LoadoutTcApi.apiVersion() >= 3) {
 ```
 
 `apiVersion()` only goes up when a method changes meaning or disappears. `version()` returns the
-Fabric version string (for example `1.0.0+1.21.1`). Both are cheap and safe to call from an
+Fabric version string (for example `1.0.1+1.21.1`). Both are cheap and safe to call from an
 entrypoint.
 
 API 4 added `SlotSource` / `ApiSlot`, the extra `SlotView` state fields and `sourceViews()`.

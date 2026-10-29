@@ -4,7 +4,7 @@ A client-side equipment HUD for Minecraft 1.21.1 on **Fabric and NeoForge**. It 
 **Accessories**, **Trinkets** and **Curios** through one model, draws them with a styleable
 renderer, and exposes a small API so other mods can add slot sources, effects and ability timers.
 
-> Status: 1.0.0 Â· Minecraft 1.21.1 Â· Fabric + NeoForge Â· client side, nothing to install on the server.
+> Status: 1.0.1 Â· Minecraft 1.21.1 Â· Fabric + NeoForge Â· client side, nothing to install on the server.
 >
 > [Overview page](https://tc-addon-mc.github.io/loadouttc/) Â· [API reference](https://tc-addon-mc.github.io/loadouttc/api.html)
 
@@ -108,8 +108,8 @@ Pick the jar for your loader â€” they are not interchangeable:
 
 | Loader | File to download | Needs |
 |---|---|---|
-| Fabric | `loadouttc-1.1.0+1.21.1-fabric.jar` | Fabric Loader, Fabric API |
-| NeoForge | `loadouttc-1.1.0+1.21.1-neoforge.jar` | NeoForge 21.1+ (no Fabric API) |
+| Fabric | `loadouttc-1.0.1+1.21.1-fabric.jar` | Fabric Loader, Fabric API |
+| NeoForge | `loadouttc-1.0.1+1.21.1-neoforge.jar` | NeoForge 21.1+ (no Fabric API) |
 
 Then:
 
