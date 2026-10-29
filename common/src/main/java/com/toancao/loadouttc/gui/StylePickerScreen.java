@@ -2,6 +2,7 @@ package com.toancao.loadouttc.gui;
 
 import com.toancao.loadouttc.compat.HudData;
 import com.toancao.loadouttc.compat.HudSlot;
+import com.toancao.loadouttc.LoadoutTcClient;
 import com.toancao.loadouttc.config.ConfigStore;
 import com.toancao.loadouttc.config.HudCluster;
 import com.toancao.loadouttc.config.HudConfig;
@@ -169,6 +170,8 @@ public final class StylePickerScreen extends Screen {
     private String lastSlot;
     /** Per-slot editing stays locked until the player unlocks it, so a click never edits by accident. */
     private boolean slotUnlocked;
+    private boolean loggedLayout;
+    private boolean warnedLayout;
     private int lockChipX;
     private int lockChipY;
     private int lockChipW;
@@ -799,7 +802,26 @@ public final class StylePickerScreen extends Screen {
 
         drawPreview(graphics, mouseX, mouseY);
 
-        graphics.enableScissor(contentX, clipTop, contentRight, clipBottom);
+        // A degenerate rect (possible when the window is tiny) would make every chip invisible,
+        // which reads as "the screen is empty" rather than "the window is small". Draw unclipped
+        // instead, and say so once so it can be traced from the log.
+        boolean clipped = contentRight > contentX && clipBottom > clipTop;
+        if (!clipped && !warnedLayout) {
+            warnedLayout = true;
+            LoadoutTcClient.LOG.warn(
+                    "Design list not clipped: w={} h={} contentX={} contentRight={} clipTop={} clipBottom={}",
+                    width, height, contentX, contentRight, clipTop, clipBottom);
+        }
+        if (!loggedLayout) {
+            loggedLayout = true;
+            LoadoutTcClient.LOG.info(
+                    "Design layout: w={} h={} side={} contentX={} contentRight={} clipTop={} clipBottom={} tab={} group={} sections={} all={} unlocked={} locked={}",
+                    width, height, sideLayout, contentX, contentRight, clipTop, clipBottom,
+                    tab, activeGroup(), sections.size(), targetAll, slotUnlocked, settingsLocked());
+        }
+        if (clipped) {
+            graphics.enableScissor(contentX, clipTop, contentRight, clipBottom);
+        }
         int y = clipTop - (int) scroll;
         for (Section section : sections) {
             if (!section.group.equals(activeGroup())) {
@@ -836,7 +858,9 @@ public final class StylePickerScreen extends Screen {
             }
             y += CHIP_H + SECTION_GAP;
         }
-        graphics.disableScissor();
+        if (clipped) {
+            graphics.disableScissor();
+        }
         if (settingsLocked()) {
             drawLockScrim(graphics);
         }

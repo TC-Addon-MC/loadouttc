@@ -56,7 +56,7 @@ ids still load for existing configs.
 | **Layout** | Vertical, Horizontal, Grid (`Columns` 1-8), Circle (`Ring radius` 16-200) |
 
 Spacing, radius, borders and per-axis nudges live in `Design → Spacing`. Defaults are a bare,
-background-free HUD with vanilla slots and normal labels.
+background-free HUD with vanilla slots and no slot names.
 
 ## Slots and panels
 
@@ -132,7 +132,7 @@ work normally.
   "panelStyle": "none",
   "slotStyle": "vanilla",
   "textStyle": "normal",
-  "labels": true,
+  "labels": false,
   "emptySlots": false,
   "layoutMode": "vertical",
   "sortMode": "default",

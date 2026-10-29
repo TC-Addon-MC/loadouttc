@@ -72,7 +72,7 @@ public final class HudConfig {
     public static final java.util.Set<String> LIGHT_EFFECTS = java.util.Set.of(
             "none", "glow", "flash", "rainbow");
 
-    public boolean labels = true;
+    public boolean labels = false;
     public String labelMode = "slot";
     public boolean groupHeaders = true;
     public boolean emptySlots = false;
