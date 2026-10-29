@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        loader: [fabric, neoforge]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Validate the shared sources
+        run: ./gradlew checkCommonPurity --no-daemon
+
+      - name: Run the headless logic check
+        if: matrix.loader == 'fabric'
+        run: ./gradlew :fabric:devCheck --no-daemon
+
+      - name: Build ${{ matrix.loader }}
+        run: ./gradlew :${{ matrix.loader }}:build --no-daemon
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: loadouttc-${{ matrix.loader }}
+          path: |
+            ${{ matrix.loader }}/build/libs/*.jar
+            !${{ matrix.loader }}/build/libs/*-sources.jar
+          if-no-files-found: error

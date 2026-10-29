@@ -25,7 +25,7 @@ if (LoadoutTcApi.apiVersion() >= 3) {
 ```
 
 `apiVersion()` only goes up when a method changes meaning or disappears. `version()` returns the
-Fabric version string (for example `1.0.0+1.21.1`). Both are cheap and safe to call from an
+Fabric version string (for example `1.0.1+1.21.1`). Both are cheap and safe to call from an
 entrypoint.
 
 API 4 added `SlotSource` / `ApiSlot`, the extra `SlotView` state fields and `sourceViews()`.
@@ -316,7 +316,7 @@ Effects are rendered on the client render thread. Keep them cheap: they run ever
 
 ```java
 LoadoutTcApi.setStyle("frost");                 // any of LoadoutTcApi.styles()
-LoadoutTcApi.setSize("auto");                  // auto | small | medium | large | xlarge | huge | giant | custom
+LoadoutTcApi.setSize("auto");                  // auto | micro | tiny | small | medium | large | xlarge | huge | giant | custom
 LoadoutTcApi.setCustomScale(0.9f);
 LoadoutTcApi.setDurabilityStyle("ring");       // bar | segments | pips | text | ring | battery | off
 LoadoutTcApi.setCooldownStyle("arc");          // arc | text | bar | frame | off
@@ -327,7 +327,7 @@ LoadoutTcApi.openEditor();
 LoadoutTcApi.reload();
 ```
 
-`setSize("auto")` follows Minecraft's GUI scale; presets go up to `giant` (3.0x) and
+`setSize("auto")` uses the default 0.8x scale; presets go up to `giant` (3.0x) and
 `setCustomScale` accepts `0.5 - 3.0`. Every setter saves `config/loadouttc.json` immediately.
 
 | Call | Note |

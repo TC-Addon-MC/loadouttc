@@ -1,0 +1,41 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/TC-Addon-MC/loadouttc/issues"
+
+[[mods]]
+modId = "loadouttc"
+version = "${version}"
+displayName = "Loadout TC"
+authors = "ToanCao"
+description = '''A compact, styleable client-side HUD for equipment and status.'''
+logoFile = "assets/loadouttc/icon.png"
+displayURL = "https://tc-addon-mc.github.io/loadouttc/"
+
+[[dependencies.loadouttc]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,22)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.loadouttc]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.loadouttc]]
+modId = "accessories"
+type = "optional"
+versionRange = "*"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.loadouttc]]
+modId = "curios"
+type = "optional"
+versionRange = "*"
+ordering = "NONE"
+side = "CLIENT"

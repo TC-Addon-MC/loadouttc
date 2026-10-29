@@ -1,0 +1,110 @@
+plugins {
+    id "java-library"
+    id "net.neoforged.moddev" version "2.0.148"
+}
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven { url = "https://api.modrinth.com/maven" }
+    // Curios API (NeoForge only on 1.21.1).
+    maven { url = "https://maven.theillusivec4.top/" }
+    mavenCentral()
+}
+
+dependencies {
+    // Compile-time only: the player installs these themselves, so nothing is bundled.
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
+    compileOnly "maven.modrinth:accessories:1.1.0-beta.54+1.21.1"
+}
+
+// Same shared sources as the Fabric module; this module only adds the NeoForge entrypoint,
+// neoforge.mods.toml and the loader wiring.
+sourceSets {
+    main {
+        java {
+            srcDirs = ["../common/src/main/java", "src/main/java"]
+            // Trinkets has no NeoForge build, and Curios is provided by this module's own
+            // API-backed class instead of the reflective shared copy.
+            exclude "com/toancao/loadouttc/compat/TrinketsSource.java"
+            exclude "com/toancao/loadouttc/compat/CuriosSource.java"
+        }
+        resources {
+            srcDirs = ["../common/src/main/resources", "src/main/resources"]
+        }
+    }
+}
+
+neoForge {
+    // ModDevGradle adds the matching net.neoforged:neoforge dependency itself.
+    version = project.neoforge_version
+
+    runs {
+        client {
+            client()
+        }
+    }
+
+    mods {
+        loadouttc {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version
+    }
+}
+
+jar {
+    from(rootProject.file("LICENSE")) {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+    exclude "com/toancao/loadouttc/DevCheck*.class"
+}
+
+// Testing loop: every build drops the jar into the launcher profile, so no manual copying.
+tasks.register('deployMod', Copy) {
+    group = 'neoforge'
+    description = 'Copy the NeoForge jar into the Modrinth profile mods folder.'
+    dependsOn tasks.named('jar')
+    def target = file(project.findProperty('modrinth_neoforge_mods_dir')
+            ?: 'D:/Modrinth/profiles/OptiFine for NeoForge/mods')
+    from(tasks.named('jar').flatMap { it.archiveFile })
+    into(target)
+    // Skipped on CI and on machines without that launcher profile.
+    onlyIf { target.parentFile != null && target.parentFile.isDirectory() }
+    doFirst {
+        if (target.isDirectory()) {
+            target.listFiles()?.findAll {
+                it.name.startsWith('loadouttc-') && it.name.endsWith('.jar')
+            }?.each { it.delete() }
+        }
+    }
+}
+
+// Release jars are named `loadouttc-<version>-neoforge.jar`.
+tasks.named('jar') {
+    archiveClassifier = 'neoforge'
+}
+
+tasks.named('build') {
+    finalizedBy 'deployMod'
+}

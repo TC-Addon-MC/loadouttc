@@ -1,115 +1,34 @@
-plugins {
-    id "fabric-loom" version "1.9-SNAPSHOT"
-    id "maven-publish"
+// Shared settings for every loader module.
+//
+// `common/src` holds all gameplay code and is compiled into each platform jar by that
+// platform's own Gradle plugin. It is intentionally not a Gradle project: a plain
+// java-library module has no Minecraft classpath, and giving it one would mean applying a
+// loader plugin to it, which defeats the point of keeping it loader-free.
+
+subprojects {
+    group = project.maven_group
+    version = project.mod_version
 }
 
-version = project.mod_version
-group = project.maven_group
+/**
+ * Guards the one rule that keeps this build maintainable: `common/src` must never import a
+ * loader's classes. Without this, the next small fix "just for Fabric" silently makes the
+ * shared sources platform-specific and the NeoForge jar stops compiling weeks later.
+ */
+tasks.register('checkCommonPurity') {
+    group = 'verification'
+    description = 'Fails if common/src imports loader-specific classes.'
 
-base {
-    archivesName = project.archives_base_name
-}
+    doLast {
+        def pattern = ~/net\.fabricmc|net\.neoforged|net\.minecraftforge|terraformersmc/
+        def offenders = fileTree('common/src') {
+            include '**/*.java'
+        }.findAll { it.getText('UTF-8') =~ pattern }
 
-repositories {
-    maven { url = "https://maven.parchmentmc.org" }
-    maven { url = "https://maven.ladysnake.org/releases" }
-    maven { url = "https://api.modrinth.com/maven" }
-    maven { url = "https://maven.wispforest.io/releases" }
-    mavenCentral()
-}
-
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
-    }
-
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    // Optional: only used for the config button in Mod Menu.
-    modCompileOnly "maven.modrinth:modmenu:11.0.3"
-
-    // Optional compat targets. `modImplementation` puts them on the compile and dev-run
-    // classpaths; Loom does not bundle them into the output jar, and every provider is loaded
-    // behind an isModLoaded() guard.
-    modImplementation "maven.modrinth:accessories:1.1.0-beta.54+1.21.1"
-    modImplementation "maven.modrinth:trinkets:3.10.0"
-    // TrinketComponent extends CCA's ComponentV3, so the CCA modules are needed on the
-    // compile classpath. The published bundle only contains nested jars, hence the modules.
-    compileOnly "org.ladysnake.cardinal-components-api:cardinal-components-base:6.1.3"
-    compileOnly "org.ladysnake.cardinal-components-api:cardinal-components-entity:6.1.3"
-    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
-
-    // Present in the dev runtime so `runClient` exercises the real providers. These never end up
-    // in the built jar.
-    modLocalRuntime "maven.modrinth:owo-lib:0.12.15.4+1.21"
-    // Trinkets bundles CCA as nested jars; the dev runtime needs the modules loose.
-    modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:6.1.3"
-    modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-entity:6.1.3"
-    // owo-lib bundles Endec as a nested jar, which Loom strips while remapping mods. Endec is
-    // plain Java, so a plain runtime entry restores the classes Accessories' mixins expect.
-    localRuntime "io.wispforest:endec:0.1.5.1"
-    modLocalRuntime "io.wispforest.endec:netty:0.1.2"
-    modLocalRuntime "io.wispforest.endec:gson:0.1.3.1"
-    modLocalRuntime "io.wispforest.endec:jankson:0.1.3.1"
-    localRuntime "blue.endless:jankson:1.2.2"
-    localRuntime "org.jetbrains:annotations:24.1.0"
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 21
-}
-
-java {
-    withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.base.archivesName.get()}" }
-    }
-    // DevCheck is a headless self-test, not part of the shipped mod.
-    exclude "com/toancao/loadouttc/DevCheck*.class"
-}
-
-// Temporary: headless logic check for slot filters / sorting. Not part of the jar.
-tasks.register('devCheck', JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.toancao.loadouttc.DevCheck'
-}
-
-// Testing loop: every build drops the jar into the launcher profile, so no manual copying.
-tasks.register('deployMod', Copy) {
-    group = 'fabric'
-    description = 'Copy the remapped jar into the Modrinth profile mods folder.'
-    dependsOn tasks.named('remapJar')
-    def target = file(project.findProperty('modrinth_mods_dir')
-            ?: 'D:/Modrinth/profiles/OptiFabric/mods')
-    from(tasks.named('remapJar').flatMap { it.archiveFile })
-    into(target)
-    doFirst {
-        // The current name is overwritten; clear leftovers from older versions.
-        if (target.isDirectory()) {
-            target.listFiles()?.findAll {
-                it.name.startsWith('loadouttc-') && it.name.endsWith('.jar')
-            }?.each { it.delete() }
+        if (!offenders.isEmpty()) {
+            throw new GradleException(
+                    "Loader imports found in common/src (move them to a platform module):\n" +
+                            offenders.collect { "  ${it.path}" }.join('\n'))
         }
     }
 }
-
-tasks.named('build') {
-    finalizedBy 'deployMod'
-}
-
