@@ -5,6 +5,7 @@ import com.toancao.loadouttc.gui.HudEditorScreen;
 import com.toancao.loadouttc.platform.HudSink;
 import com.toancao.loadouttc.platform.Platform;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.KeyMapping;
@@ -88,8 +89,15 @@ final class NeoForgePlatform implements Platform {
 
     @Override
     public List<NamedSource> builtinSources() {
-        // Phase 3: native Curios, then Accessories.
-        return Collections.emptyList();
+        List<NamedSource> sources = new ArrayList<>();
+        // Constructed only when the mod is present, so a missing API is never class-loaded.
+        if (isModLoaded("accessories")) {
+            sources.add(new NamedSource("Accessories", new com.toancao.loadouttc.compat.AccessoriesSource()));
+        }
+        if (isModLoaded("curios")) {
+            sources.add(new NamedSource("Curios", new CuriosSource()));
+        }
+        return sources;
     }
 
     // ---- event handlers ----

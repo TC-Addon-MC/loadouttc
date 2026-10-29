@@ -9,7 +9,15 @@ base {
 
 repositories {
     maven { url = "https://api.modrinth.com/maven" }
+    // Curios API (NeoForge only on 1.21.1).
+    maven { url = "https://maven.theillusivec4.top/" }
     mavenCentral()
+}
+
+dependencies {
+    // Compile-time only: the player installs these themselves, so nothing is bundled.
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
+    compileOnly "maven.modrinth:accessories:1.1.0-beta.54+1.21.1"
 }
 
 // Same shared sources as the Fabric module; this module only adds the NeoForge entrypoint,
@@ -18,10 +26,10 @@ sourceSets {
     main {
         java {
             srcDirs = ["../common/src/main/java", "src/main/java"]
-            // Fabric-only providers: Accessories ships no NeoForge build for this API and
-            // Trinkets has no NeoForge build at all.
-            exclude "com/toancao/loadouttc/compat/AccessoriesSource.java"
+            // Trinkets has no NeoForge build, and Curios is provided by this module's own
+            // API-backed class instead of the reflective shared copy.
             exclude "com/toancao/loadouttc/compat/TrinketsSource.java"
+            exclude "com/toancao/loadouttc/compat/CuriosSource.java"
         }
         resources {
             srcDirs = ["../common/src/main/resources", "src/main/resources"]
