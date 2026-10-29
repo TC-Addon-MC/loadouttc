@@ -4,16 +4,16 @@ A client-side equipment HUD for Minecraft 1.21.1 on **Fabric and NeoForge**. It 
 **Accessories**, **Trinkets** and **Curios** through one model, draws them with a styleable
 renderer, and exposes a small API so other mods can add slot sources, effects and ability timers.
 
-> Status: 1.0.0 · Minecraft 1.21.1 · Fabric + NeoForge · client side, nothing to install on the server.
+> Status: 1.0.0 Â· Minecraft 1.21.1 Â· Fabric + NeoForge Â· client side, nothing to install on the server.
 >
-> [Overview page](https://tc-addon-mc.github.io/loadouttc/) · [API reference](https://tc-addon-mc.github.io/loadouttc/api.html)
+> [Overview page](https://tc-addon-mc.github.io/loadouttc/) Â· [API reference](https://tc-addon-mc.github.io/loadouttc/api.html)
 
 ---
 
 ## Features
 
 - One HUD for every equipment mod; a source that is missing is simply skipped.
-- Slot menu with one tab per source, per-slot ticks, five sort orders and manual `▲` `▼`.
+- Slot menu with one tab per source, per-slot ticks, five sort orders and manual `â–²` `â–¼`.
 - Draggable panels: several independent HUDs on screen, each with its own slots and look.
 - Durability, cooldown and ability layers, each with its own style, colour, thickness and text.
 - In-game editor with live preview; everything is saved to `config/loadouttc.json`.
@@ -39,7 +39,7 @@ renderer, and exposes a small API so other mods can add slot sources, effects an
 `Auto` is the first-run default and sits at 0.8x. Presets go from `XXS` (0.5x) to `3x`, so a HUD
 can be much smaller or much larger than the vanilla hotbar:
 
-`Auto 0.8x` · `XXS 0.5x` · `XS 0.65x` · `S 0.8x` · `M 1.0x` · `L 1.25x` · `XL 1.5x` · `2x` · `3x` · `Custom`
+`Auto 0.8x` Â· `XXS 0.5x` Â· `XS 0.65x` Â· `S 0.8x` Â· `M 1.0x` Â· `L 1.25x` Â· `XL 1.5x` Â· `2x` Â· `3x` Â· `Custom`
 
 If the HUD would run off screen, the renderer scales it down just enough to keep it visible.
 
@@ -55,12 +55,12 @@ ids still load for existing configs.
 | **Text** | Normal, Upper, Bright, Gold, Outline |
 | **Layout** | Vertical, Horizontal, Grid (`Columns` 1-8), Circle (`Ring radius` 16-200) |
 
-Spacing, radius, borders and per-axis nudges live in `Design → Spacing`. Defaults are a bare,
+Spacing, radius, borders and per-axis nudges live in `Design â†’ Spacing`. Defaults are a bare,
 background-free HUD with vanilla slots and no slot names.
 
 ## Slots and panels
 
-Open the slot menu with **Slots** in the editor toolbar (or `Design → Slots → Open slot menu`).
+Open the slot menu with **Slots** in the editor toolbar (or `Design â†’ Slots â†’ Open slot menu`).
 Tabs appear only for installed sources and show `shown/total`; each vanilla group has its own
 heading and on/off switch. `All / Checked`, `Empty`, `Source`, `Sort` and `Check all / Clear` sit in
 one control row; `To / Move checked` sends the ticked slots of the tab to another panel.
@@ -104,12 +104,12 @@ Everything runs on the client; no call is required for the HUD to work.
 
 ## Install
 
-Pick the jar for your loader — they are not interchangeable:
+Pick the jar for your loader â€” they are not interchangeable:
 
 | Loader | File to download | Needs |
 |---|---|---|
-| Fabric | `loadouttc-1.0.0+1.21.1-fabric.jar` | Fabric Loader, Fabric API |
-| NeoForge | `loadouttc-1.0.0+1.21.1-neoforge.jar` | NeoForge 21.1+ (no Fabric API) |
+| Fabric | `loadouttc-1.1.0+1.21.1-fabric.jar` | Fabric Loader, Fabric API |
+| NeoForge | `loadouttc-1.1.0+1.21.1-neoforge.jar` | NeoForge 21.1+ (no Fabric API) |
 
 Then:
 
@@ -183,10 +183,10 @@ Java 21, then `./gradlew build`. Each loader builds its own jar into `<loader>/b
 
 ## Community
 
-- [Ko-fi](https://ko-fi.com/toancao) — support development
-- [YouTube](https://www.youtube.com/@toancaomc) — demos and updates
-- [Discord](https://discord.gg/Dd349SKRvQ) — questions and bug reports
-- [CurseForge](https://www.curseforge.com/members/toancao/projects) — all projects
+- [Ko-fi](https://ko-fi.com/toancao) â€” support development
+- [YouTube](https://www.youtube.com/@toancaomc) â€” demos and updates
+- [Discord](https://discord.gg/Dd349SKRvQ) â€” questions and bug reports
+- [CurseForge](https://www.curseforge.com/members/toancao/projects) â€” all projects
 
 ## License
 
