@@ -172,7 +172,7 @@ dev client with the supported mods on the classpath.
 
 - [Ko-fi](https://ko-fi.com/toancao) — support development
 - [YouTube](https://www.youtube.com/@toancaomc) — demos and updates
-- [Discord](https://discord.gg/9rch87H9yM) — questions and bug reports
+- [Discord](https://discord.gg/Dd349SKRvQ) — questions and bug reports
 - [CurseForge](https://www.curseforge.com/members/toancao/projects) — all projects
 
 ## License
